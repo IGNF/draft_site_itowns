@@ -1,0 +1,354 @@
+---
+/**
+ * Bandeau fixe bas de page uniquement (pas de section dans le flux du document).
+ * Réf. https://www.itowns-project.org/about#sponsors
+ */
+type SponsorEntry = {
+    name: string;
+    href: string;
+    logo: string;
+    logoHeight: number;
+};
+
+type MarqueeBlock =
+    | { kind: "label"; tier: "key" | "recurrent"; text: string }
+    | { kind: "sep" }
+    | { kind: "logo"; tier: "key" | "recurrent"; org: SponsorEntry };
+
+const keyStakeholders: SponsorEntry[] = [
+    {
+        name: "IGN",
+        href: "https://www.ign.fr/",
+        logo: "https://www.ign.fr/files/default/styles/thumbnail/public/2020-06/logoIGN_300x200.png",
+        logoHeight: 28,
+    },
+    {
+        name: "Ciril Group",
+        href: "https://www.cirilgroup.com/fr/",
+        logo: "https://cirilgroup.com/wp-content/uploads/2024/11/Logo_Ciril-GROUP.svg",
+        logoHeight: 28,
+    },
+];
+
+const recurrentContributors: SponsorEntry[] = [
+    {
+        name: "Sogelink",
+        href: "https://www.sogelink.com/",
+        logo: "https://www.sogelink.com/wp-content/uploads/2022/06/Frame.svg",
+        logoHeight: 22,
+    },
+    {
+        name: "LIRIS",
+        href: "https://liris.cnrs.fr/",
+        logo: "https://liris.cnrs.fr/sites/default/files/logo_liris_160_0.png",
+        logoHeight: 24,
+    },
+    {
+        name: "LASTIG",
+        href: "https://www.umr-lastig.fr/fr/",
+        /** Logo extrait du site officiel (ressource statique lastig1.svg → PNG 149×60). */
+        logo: "/sponsors/lastig.png",
+        logoHeight: 24,
+    },
+];
+
+function buildMarqueeCycle(): MarqueeBlock[] {
+    return [
+        { kind: "label", tier: "key", text: "Key stakeholders" },
+        ...keyStakeholders.map(
+            (org) =>
+                ({ kind: "logo", tier: "key", org }) satisfies MarqueeBlock,
+        ),
+        { kind: "sep" },
+        { kind: "label", tier: "recurrent", text: "Recurrent contributors" },
+        ...recurrentContributors.map(
+            (org) =>
+                ({ kind: "logo", tier: "recurrent", org }) satisfies MarqueeBlock,
+        ),
+    ];
+}
+
+const marqueeCycle = buildMarqueeCycle();
+/** Trois cycles identiques pour translateX(-33,33 %) */
+const sponsorsMarquee = [...marqueeCycle, ...marqueeCycle, ...marqueeCycle];
+---
+
+<section id="sponsors" class="sponsors" aria-label="Partners">
+    <div
+        class="sponsors-strip"
+        role="region"
+        aria-label="Partners — Key stakeholders then recurrent contributors. Auto-scrolling, pause on hover."
+    >
+        <div class="sponsors-strip-edge sponsors-strip-edge--start" aria-hidden="true"
+        ></div>
+        <div class="sponsors-strip-viewport">
+            <div class="sponsors-strip-track">
+                {
+                    sponsorsMarquee.map((block, i) => {
+                        const cycleNum =
+                            Math.floor(i / marqueeCycle.length) + 1;
+
+                        if (block.kind === "label") {
+                            return (
+                                <span
+                                    class:list={[
+                                        "tier-label",
+                                        `tier-label--${block.tier}`,
+                                    ]}
+                                    data-marquee-cycle={cycleNum}
+                                >
+                                    {block.text}
+                                </span>
+                            );
+                        }
+
+                        if (block.kind === "sep") {
+                            return (
+                                <span
+                                    class="tier-sep"
+                                    aria-hidden="true"
+                                    data-marquee-cycle={cycleNum}
+                                />
+                            );
+                        }
+
+                        const { org, tier } = block;
+                        return (
+                            <a
+                                class:list={[
+                                    "sponsors-strip-link",
+                                    tier === "key"
+                                        ? "sponsors-strip-link--key"
+                                        : "sponsors-strip-link--recurrent",
+                                ]}
+                                href={org.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${org.name} — ${tier === "key" ? "Key stakeholder" : "Recurrent contributor"} — website`}
+                                data-marquee-cycle={cycleNum}
+                            >
+                                <img
+                                    class="sponsors-strip-logo"
+                                    src={org.logo}
+                                    alt=""
+                                    width="168"
+                                    height={org.logoHeight}
+                                    loading="lazy"
+                                    decoding="async"
+                                    style={`height:${org.logoHeight}px`}
+                                />
+                            </a>
+                        );
+                    })
+                }
+            </div>
+        </div>
+        <div class="sponsors-strip-edge sponsors-strip-edge--end" aria-hidden="true"
+        ></div>
+    </div>
+</section>
+
+<style>
+    /* Pas de bloc « Sponsors » dans le corps de page : uniquement le bandeau fixe */
+    .sponsors {
+        padding: 0;
+        margin: 0;
+        height: 0;
+        overflow: visible;
+        pointer-events: none;
+    }
+
+    .sponsors-strip {
+        pointer-events: auto;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        display: flex;
+        align-items: center;
+        min-height: 2.5rem;
+        padding-block: var(--px-4, 0.25rem);
+        padding-inline: 0;
+        /* Démarcation nette avec le contenu au-dessus */
+        border-top: 2px solid rgba(0, 0, 0, 0.14);
+        background: #ffffff;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        box-shadow:
+            0 -1px 0 rgba(255, 255, 255, 0.9) inset,
+            0 -6px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    :global(html[data-theme="dark"]) .sponsors-strip {
+        background: color-mix(in srgb, var(--color-surface-raised) 88%, #ffffff 12%);
+        border-top: 2px solid rgba(255, 255, 255, 0.22);
+        box-shadow:
+            0 -1px 0 rgba(0, 0, 0, 0.35) inset,
+            0 -8px 24px rgba(0, 0, 0, 0.55);
+    }
+
+    .sponsors-strip-viewport {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        mask-image: linear-gradient(
+            90deg,
+            transparent,
+            #000 2.5%,
+            #000 97.5%,
+            transparent
+        );
+    }
+
+    .sponsors-strip-edge {
+        flex-shrink: 0;
+        width: var(--px-12, 0.75rem);
+    }
+
+    .sponsors-strip-track {
+        display: flex;
+        width: max-content;
+        align-items: center;
+        gap: clamp(1rem, 2.8vw, 2.5rem);
+        will-change: transform;
+        animation: sponsors-marquee 48s linear infinite;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .sponsors-strip:hover .sponsors-strip-track {
+            animation-play-state: paused;
+        }
+    }
+
+    @keyframes sponsors-marquee {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-33.3333333333%);
+        }
+    }
+
+    .tier-label {
+        flex-shrink: 0;
+        font-size: 0.625rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        font-weight: 600;
+        white-space: nowrap;
+        padding: 2px var(--px-8, 0.5rem);
+        border-radius: 999px;
+        line-height: 1.1;
+    }
+
+    .tier-label--key {
+        color: var(--color-text-primary);
+        background: rgba(0, 0, 0, 0.045);
+        border: 1px solid rgba(0, 0, 0, 0.14);
+    }
+
+    .tier-label--recurrent {
+        color: var(--color-text-primary);
+        background: rgba(0, 0, 0, 0.035);
+        border: 1px solid rgba(0, 0, 0, 0.11);
+    }
+
+    :global(html[data-theme="dark"]) .tier-label--key {
+        background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+        border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    :global(html[data-theme="dark"]) .tier-label--recurrent {
+        background: color-mix(in srgb, var(--color-surface-muted) 65%, transparent);
+        border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .tier-sep {
+        flex-shrink: 0;
+        width: 2px;
+        height: 1.125rem;
+        margin-inline: var(--px-4);
+        border-radius: 1px;
+        background: rgba(0, 0, 0, 0.22);
+        opacity: 1;
+    }
+
+    :global(html[data-theme="dark"]) .tier-sep {
+        background: rgba(255, 255, 255, 0.28);
+    }
+
+    .sponsors-strip-link {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-inline: var(--px-6);
+        transition: opacity var(--transition-short, 0.15s) ease;
+    }
+
+    .sponsors-strip-link--key {
+        opacity: 1;
+    }
+
+    .sponsors-strip-link--recurrent {
+        opacity: 0.96;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .sponsors-strip-link:hover {
+            opacity: 1;
+        }
+    }
+
+    .sponsors-strip-logo {
+        display: block;
+        width: auto;
+        max-width: min(8rem, 24vw);
+        height: auto;
+        object-fit: contain;
+        object-position: center;
+        filter: contrast(1.1) saturate(1.08);
+    }
+
+    .sponsors-strip-link--recurrent .sponsors-strip-logo {
+        max-width: min(7rem, 22vw);
+    }
+
+    :global(html[data-theme="dark"]) .sponsors-strip-logo {
+        filter: brightness(1.12) contrast(1.12) saturate(1.06);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .sponsors-strip-viewport {
+            overflow-x: auto;
+            overflow-y: hidden;
+            overscroll-behavior-x: contain;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            mask-image: linear-gradient(
+                90deg,
+                transparent,
+                #000 4%,
+                #000 96%,
+                transparent
+            );
+        }
+
+        .sponsors-strip-track {
+            animation: none;
+            will-change: auto;
+            transform: none;
+        }
+
+        .sponsors-strip-track [data-marquee-cycle="2"],
+        .sponsors-strip-track [data-marquee-cycle="3"] {
+            display: none;
+        }
+    }
+
+    :global(body:has(#sponsors)) {
+        padding-bottom: 3.25rem;
+        padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
+    }
+</style>

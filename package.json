@@ -1,0 +1,21 @@
+{
+  "name": "draft_site_itowns",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=18.20.8"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.1",
+    "astro": "^5.16.0",
+    "astro-favicons": "^3.1.6",
+    "sharp": "^0.34.5",
+    "swiper": "^11.2.10"
+  }
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--
+  Same globe as view_3d_map (ortho + DTM), no GuiTools, widgets, search bar, or debug.
+  Data is loaded from the same examples tree as the official site (absolute URLs).
+-->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>iTowns globe</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                height: 100%;
+                overflow: hidden;
+                background: #000;
+            }
+            #viewerDiv {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <script type="importmap">
+            {
+                "imports": {
+                    "itowns": "https://www.itowns-project.org/itowns/dist/itowns.js",
+                    "debug": "https://www.itowns-project.org/itowns/dist/debug.js",
+                    "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="viewerDiv"></div>
+        <script type="module">
+            import * as itowns from "itowns";
+
+            const EXAMPLES_BASE =
+                "https://www.itowns-project.org/itowns/examples/";
+
+            const placement = {
+                coord: new itowns.Coordinates("EPSG:4326", 2.351323, 48.856712),
+                range: 25000000,
+            };
+
+            const viewerDiv = document.getElementById("viewerDiv");
+            const view = new itowns.GlobeView(viewerDiv, placement, {
+                realisticLighting: true,
+            });
+
+            // Rotation / pan kept; zoom disabled (wheel, middle button, two-finger pinch, double-click zoom).
+            view.controls.states.ZOOM.enable = false;
+            view.controls.states.DOLLY.enable = false;
+            view.controls.states.TRAVEL_IN.enable = false;
+
+            itowns.Fetcher.json(
+                EXAMPLES_BASE + "layers/JSONLayers/Ortho.json",
+            ).then(function _(config) {
+                config.source = new itowns.WMTSSource(config.source);
+                view.addLayer(new itowns.ColorLayer("Ortho", config));
+            });
+
+            function addElevationLayerFromConfig(config) {
+                config.source = new itowns.WMTSSource(config.source);
+                view.addLayer(new itowns.ElevationLayer(config.id, config));
+            }
+
+            itowns.Fetcher.json(
+                EXAMPLES_BASE + "layers/JSONLayers/IGN_MNT_HIGHRES.json",
+            ).then(addElevationLayerFromConfig);
+            itowns.Fetcher.json(
+                EXAMPLES_BASE + "layers/JSONLayers/WORLD_DTM.json",
+            ).then(addElevationLayerFromConfig);
+
+            view.skyManager.enabled = true;
+
+            window.view = view;
+            window.itowns = itowns;
+
+            /* Very slow globe rotation; stops on first pointer gesture. */
+            const prefersReducedMotion = globalThis.matchMedia?.(
+                "(prefers-reduced-motion: reduce)",
+            )?.matches;
+
+            let autoLon = 2.351323;
+            const autoLat = 48.856712;
+            let lastFrameTime = performance.now();
+            let stopAutoRotate = prefersReducedMotion === true;
+
+            viewerDiv.addEventListener(
+                "pointerdown",
+                () => {
+                    stopAutoRotate = true;
+                },
+                { passive: true },
+            );
+
+            /** ~18 min per full rotation (tune with turnPeriodSec). */
+            const turnPeriodSec = 18 * 60;
+            const degPerSec = 360 / turnPeriodSec;
+
+            function autoRotateStep(now) {
+                if (stopAutoRotate) {
+                    return;
+                }
+                const dt = Math.min(0.05, (now - lastFrameTime) / 1000);
+                lastFrameTime = now;
+                autoLon += degPerSec * dt;
+                if (autoLon > 180) {
+                    autoLon -= 360;
+                }
+                if (autoLon < -180) {
+                    autoLon += 360;
+                }
+                try {
+                    view.controls.lookAtCoordinate({
+                        coord: new itowns.Coordinates(
+                            "EPSG:4326",
+                            autoLon,
+                            autoLat,
+                        ),
+                        range: placement.range,
+                    });
+                } catch {
+                    stopAutoRotate = true;
+                    return;
+                }
+                requestAnimationFrame(autoRotateStep);
+            }
+
+            if (!prefersReducedMotion) {
+                setTimeout(() => {
+                    requestAnimationFrame(autoRotateStep);
+                }, 400);
+            }
+        </script>
+    </body>
+</html>

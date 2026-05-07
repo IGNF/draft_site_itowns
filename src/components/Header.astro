@@ -1,0 +1,783 @@
+---
+import { Fragment } from "astro/jsx-runtime";
+import socialIcons from "@assets/socialIcons";
+import { SITE } from "@consts";
+
+const exempleGalleryUrl =
+    "https://www.itowns-project.org/itowns/dev/examples/?#demo/index";
+const docsFundamentalsUrl =
+    "https://www.itowns-project.org/itowns/docs/#tutorials/Fundamentals";
+
+/** Profils listés sur https://www.itowns-project.org/about#project */
+const communityGithubLogins = [
+    "desplandis",
+    "jailln",
+    "AnthonyGlt",
+    "ftoromanoff",
+    "mgermerie",
+    "gchoqueux",
+    "jogarnier",
+    "zarov",
+    "ketourneau",
+    "pourfex",
+    "valentinMachado",
+] as const;
+
+const projectAboutUrl = "https://www.itowns-project.org/about#project";
+const contributorsUrl =
+    "https://github.com/iTowns/itowns/graphs/contributors";
+---
+
+<header id="header" class="header">
+    <div class="mobile-overlay"></div>
+    <nav
+        class="section-container nav-container"
+        role="navigation"
+        aria-label="Main navigation"
+    >
+        <div class="logo-container">
+            <a
+                href="/"
+                class="logo"
+                title="iTowns home (scroll to top when already on the page)"
+                aria-label="iTowns — home or top of page"
+            >
+                iTowns
+            </a>
+        </div>
+
+        <div class="nav-content">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About iTowns</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#portfolio" class="nav-link"
+                        >Features</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a href="#license" class="nav-link">License</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#faq" class="nav-link">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a
+                        href={exempleGalleryUrl}
+                        class="nav-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Exemple</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        href={docsFundamentalsUrl}
+                        class="nav-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Documentation</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a
+                        href={`mailto:${SITE.EMAIL}`}
+                        class="nav-link"
+                        title={`Email ${SITE.EMAIL}`}
+                        aria-label={`Contact — ${SITE.EMAIL}`}
+                    >
+                        Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="header-trailing">
+            <button
+                type="button"
+                class="theme-toggle"
+                title="Toggle light / dark theme"
+                aria-label="Enable dark theme"
+                aria-pressed="false"
+            >
+                <svg
+                    class="theme-toggle-icon theme-toggle-moon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                    ></path>
+                </svg>
+                <svg
+                    class="theme-toggle-icon theme-toggle-sun"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"
+                    ></path>
+                </svg>
+            </button>
+
+            <div class="github-community-wrap">
+                <a
+                    href="https://github.com/iTowns/itowns"
+                    class="nav-github"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="iTowns GitHub repository"
+                >
+                    <span class="nav-github-icon" aria-hidden="true">
+                        <Fragment set:html={socialIcons.github} />
+                    </span>
+                </a>
+                <div
+                    class="community-panel"
+                    role="region"
+                    aria-label="Main contributors — GitHub community"
+                >
+                    <p class="community-panel-kicker">
+                        <a
+                            href={projectAboutUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >Project · iTowns</a
+                        >
+                    </p>
+                    <p class="community-panel-title">
+                        Main contributors
+                    </p>
+                    <p class="community-panel-hint">
+                        Hover an avatar to highlight it — click to open the
+                        GitHub profile.
+                    </p>
+                    <ul class="community-avatars">
+                        {
+                            communityGithubLogins.map((login) => (
+                                <li>
+                                    <a
+                                        href={`https://github.com/${login}`}
+                                        class="community-avatar-link"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        title={`@${login}`}
+                                    >
+                                        <img
+                                            class="community-avatar-img"
+                                            src={`https://github.com/${login}.png?size=80`}
+                                            alt={`${login} on GitHub`}
+                                            width="40"
+                                            height="40"
+                                            loading="lazy"
+                                            decoding="async"
+                                        />
+                                    </a>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                    <p class="community-panel-footer">
+                        <a
+                            href={contributorsUrl}
+                            class="community-all-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >Full contributor list</a
+                        >
+                    </p>
+                </div>
+            </div>
+
+            <button
+                class="hamburger"
+                aria-label="Toggle menu"
+                aria-expanded="false"
+            >
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<div id="trigger" class="trigger"></div>
+
+<style>
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--h-menu-bar);
+        display: flex;
+        padding-inline: var(--px-32);
+        z-index: var(--z-max);
+        transition: all var(--transition-short);
+        color: var(--color-text-primary);
+    }
+
+    .header-trailing {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--px-8);
+        margin-inline-start: var(--px-16);
+        flex-shrink: 0;
+    }
+
+    .theme-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.625rem;
+        height: 2.625rem;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        border-radius: var(--radius-md, 8px);
+        transition: background-color var(--transition-short);
+    }
+
+    .theme-toggle-icon {
+        width: var(--px-22, 1.375rem);
+        height: var(--px-22, 1.375rem);
+        flex-shrink: 0;
+    }
+
+    /* Clair → icône lune ; sombre → icône soleil */
+    :global(html[data-theme="light"]) .theme-toggle-sun {
+        display: none;
+    }
+
+    :global(html[data-theme="dark"]) .theme-toggle-moon {
+        display: none;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .theme-toggle:hover {
+            background-color: color-mix(
+                in srgb,
+                var(--color-text-primary) 8%,
+                transparent
+            );
+        }
+    }
+
+    .nav-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: var(--text-base);
+        font-weight: 500;
+    }
+
+    .logo-container {
+        position: relative;
+        z-index: 1;
+        flex-shrink: 0;
+    }
+
+    .logo {
+        cursor: pointer;
+    }
+
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: var(--px-28);
+        height: var(--px-18);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: var(--z-max);
+    }
+
+    .hamburger-line {
+        display: block;
+        width: 100%;
+        height: var(--px-2);
+        background-color: currentColor;
+        transition: transform var(--transition-medium);
+    }
+
+    .nav-menu {
+        display: flex;
+    }
+
+    .nav-item {
+        margin-inline: var(--px-16);
+    }
+
+    .nav-link {
+        display: flex;
+        opacity: 0.65;
+        transition: all var(--transition-short);
+    }
+
+    .nav-link:active {
+        opacity: 1;
+        transform: scale(0.98);
+    }
+
+    .github-community-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* Pont pour garder le survol entre l’icône et le panneau */
+    .github-community-wrap::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        height: 0.75rem;
+    }
+
+    .nav-github {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.625rem;
+        height: 2.625rem;
+        border-radius: var(--radius-md, 8px);
+        color: inherit;
+        transition: background-color var(--transition-short);
+    }
+
+    .nav-github-icon {
+        display: flex;
+        width: var(--px-22, 1.375rem);
+        height: var(--px-22, 1.375rem);
+    }
+
+    .nav-github-icon :global(svg) {
+        width: 100%;
+        height: 100%;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .nav-github:hover {
+            background-color: color-mix(
+                in srgb,
+                var(--color-text-primary) 8%,
+                transparent
+            );
+        }
+    }
+
+    .community-panel {
+        position: absolute;
+        top: calc(100% + 0.75rem);
+        right: 0;
+        width: min(18rem, calc(100vw - 2rem));
+        padding: var(--px-20, 1.25rem);
+        background: var(--color-surface-raised-muted);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: 0.75rem;
+        box-shadow: var(--color-shadow-popover);
+        z-index: calc(var(--z-max) + 2);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-0.35rem);
+        pointer-events: none;
+        transition:
+            opacity var(--transition-short, 0.15s) ease,
+            visibility var(--transition-short, 0.15s) ease,
+            transform var(--transition-short, 0.15s) ease;
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+
+    .github-community-wrap:hover .community-panel,
+    .github-community-wrap:focus-within .community-panel {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .community-panel-kicker {
+        margin: 0 0 var(--px-8, 0.5rem);
+        font-size: var(--text-xs, 0.75rem);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        opacity: 0.7;
+    }
+
+    .community-panel-kicker a {
+        border-bottom: 1px solid currentColor;
+        padding-bottom: 1px;
+        transition: opacity var(--transition-short, 0.15s) ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .community-panel-kicker a:hover {
+            opacity: 0.75;
+        }
+    }
+
+    .community-panel-title {
+        margin: 0;
+        font-size: var(--text-sm, 0.875rem);
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .community-panel-hint {
+        margin: var(--px-8, 0.5rem) 0 0;
+        font-size: var(--text-xs, 0.75rem);
+        line-height: 1.4;
+        opacity: 0.75;
+    }
+
+    .community-avatars {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--px-10, 0.625rem);
+        list-style: none;
+        margin: var(--px-16, 1rem) 0 0;
+        padding: 0;
+    }
+
+    .community-avatar-link {
+        display: block;
+        border-radius: 50%;
+        overflow: hidden;
+        line-height: 0;
+        transition: transform var(--transition-short, 0.15s) ease,
+            box-shadow var(--transition-short, 0.15s) ease;
+    }
+
+    .community-avatar-img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .community-avatar-link:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 0 2px currentColor;
+        }
+    }
+
+    .community-panel-footer {
+        margin: var(--px-16, 1rem) 0 0;
+        padding-top: var(--px-12, 0.75rem);
+        border-top: 1px solid var(--color-border-faint);
+        font-size: var(--text-xs, 0.75rem);
+    }
+
+    .community-all-link {
+        font-weight: 500;
+        border-bottom: 2px solid currentColor;
+        padding-bottom: 2px;
+        transition: opacity var(--transition-short, 0.15s) ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .community-all-link:hover {
+            opacity: 0.75;
+        }
+    }
+
+    .scrolled {
+        height: var(--h-menu-bar-scrolled) !important;
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        background: var(--color-surface-raised-muted);
+        box-shadow: var(--shadow-header);
+    }
+
+    .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--color-overlay);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: var(--z-50);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .trigger {
+        height: 1px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .nav-link:hover {
+            opacity: 1;
+        }
+    }
+
+    @media screen and (max-width: 64rem) {
+        .header {
+            padding-inline: var(--px-16);
+        }
+
+        .hamburger {
+            display: flex;
+        }
+
+        .nav-content {
+            z-index: var(--z-999);
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 100%;
+            max-width: 18.75rem;
+            background: var(--color-surface-raised);
+            flex-direction: column;
+            padding: calc(var(--h-menu-bar) + 2rem) var(--px-16) var(--px-32);
+            transition: right 0.3s ease;
+            box-shadow: var(--color-shadow-drawer);
+            justify-content: flex-start;
+        }
+
+        .nav-content.active {
+            right: 0;
+        }
+
+        .nav-menu {
+            flex-direction: column;
+            gap: var(--px-20);
+            margin-bottom: var(--px-40);
+            justify-content: flex-start;
+        }
+
+        .nav-item {
+            margin: 0;
+        }
+
+        .nav-link {
+            font-size: var(--text-2xl);
+        }
+
+        .hamburger.active .hamburger-line:nth-child(1) {
+            transform: translateY(0.438rem) rotate(45deg);
+        }
+
+        .hamburger.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active .hamburger-line:nth-child(3) {
+            transform: translateY(-0.563rem) rotate(-45deg);
+        }
+    }
+</style>
+
+<script>
+    function observeHeader() {
+        const trigger = document.getElementById("trigger");
+        const header = document.getElementById("header");
+
+        if (!trigger || !header) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                header.classList.toggle("scrolled", !entry.isIntersecting);
+            },
+            { threshold: 0 },
+        );
+
+        observer.observe(trigger);
+
+        return () => observer.disconnect();
+    }
+
+    function closeMobileMenu() {
+        const hamburger = document.querySelector(".hamburger");
+        const navContent = document.querySelector(".nav-content");
+        const overlay = document.querySelector(".mobile-overlay");
+        hamburger?.classList.remove("active");
+        navContent?.classList.remove("active");
+        overlay?.classList.remove("active");
+        hamburger?.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("no-scroll");
+    }
+
+    /** On home: scroll to top and strip hash from URL without changing theme. */
+    function initLogoHomeBehavior() {
+        const logoLink = document.querySelector(".logo");
+        if (!logoLink) return;
+
+        const handleLogoClick = (e: MouseEvent) => {
+            if (
+                e.button !== 0 ||
+                e.metaKey ||
+                e.ctrlKey ||
+                e.shiftKey ||
+                e.altKey
+            ) {
+                return;
+            }
+
+            const raw = window.location.pathname.replace(/\/$/, "") || "/";
+            const isHomePath =
+                raw === "/" || raw === "/index.html";
+
+            if (!isHomePath) return;
+
+            e.preventDefault();
+            closeMobileMenu();
+
+            if (window.location.hash) {
+                history.replaceState(
+                    null,
+                    "",
+                    window.location.pathname + window.location.search,
+                );
+            }
+
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        };
+
+        logoLink.addEventListener("click", handleLogoClick);
+
+        return () => {
+            logoLink.removeEventListener("click", handleLogoClick);
+        };
+    }
+
+    function initMobileMenu() {
+        const hamburger = document.querySelector(".hamburger");
+        const navContent = document.querySelector(".nav-content");
+        const overlay = document.querySelector(".mobile-overlay");
+
+        if (!hamburger || !navContent || !overlay) return;
+
+        function openMenu() {
+            hamburger?.classList.add("active");
+            navContent?.classList.add("active");
+            overlay?.classList.add("active");
+            hamburger?.setAttribute("aria-expanded", "true");
+            document.body.classList.add("no-scroll");
+        }
+
+        const toggleMenu = () => {
+            hamburger.classList.contains("active")
+                ? closeMobileMenu()
+                : openMenu();
+        };
+
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === "Escape" && hamburger.classList.contains("active")) {
+                closeMobileMenu();
+            }
+        };
+
+        const onNavContentClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.classList.contains("nav-link")) {
+                closeMobileMenu();
+            }
+        };
+
+        navContent.addEventListener("click", onNavContentClick);
+
+        hamburger.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", closeMobileMenu);
+        document.addEventListener("keydown", handleEscape);
+
+        return () => {
+            hamburger.removeEventListener("click", toggleMenu);
+            navContent.removeEventListener("click", onNavContentClick);
+            overlay.removeEventListener("click", closeMobileMenu);
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }
+
+    const THEME_STORAGE_KEY = "itowns-theme";
+
+    function initThemeToggle() {
+        const btn = document.querySelector(
+            ".theme-toggle",
+        ) as HTMLButtonElement | null;
+        if (!btn) return;
+
+        function syncFromDocument() {
+            const dark = document.documentElement.dataset.theme === "dark";
+            btn.setAttribute("aria-pressed", dark ? "true" : "false");
+            btn.setAttribute(
+                "aria-label",
+                dark ? "Enable light theme" : "Enable dark theme",
+            );
+            const meta = document.getElementById("meta-theme-color");
+            if (meta) {
+                meta.setAttribute("content", dark ? "#0f0f0f" : "#f1f1f1");
+            }
+        }
+
+        function onToggle() {
+            const nextDark = document.documentElement.dataset.theme !== "dark";
+            document.documentElement.dataset.theme = nextDark ? "dark" : "light";
+            try {
+                localStorage.setItem(
+                    THEME_STORAGE_KEY,
+                    nextDark ? "dark" : "light",
+                );
+            } catch {
+                /* ignore */
+            }
+            syncFromDocument();
+        }
+
+        syncFromDocument();
+        btn.addEventListener("click", onToggle);
+
+        return () => {
+            btn.removeEventListener("click", onToggle);
+        };
+    }
+
+    let headerCleanup = observeHeader();
+    let logoCleanup = initLogoHomeBehavior();
+    let menuCleanup = initMobileMenu();
+    let themeCleanup = initThemeToggle();
+
+    document.addEventListener("astro:after-swap", () => {
+        if (headerCleanup) headerCleanup();
+        if (logoCleanup) logoCleanup();
+        if (menuCleanup) menuCleanup();
+        if (themeCleanup) themeCleanup();
+        headerCleanup = observeHeader();
+        logoCleanup = initLogoHomeBehavior();
+        menuCleanup = initMobileMenu();
+        themeCleanup = initThemeToggle();
+    });
+</script>

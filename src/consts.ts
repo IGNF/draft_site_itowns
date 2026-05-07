@@ -27,10 +27,4 @@ export const SOCIALS: Socials = [
     LABEL: `${SITE.COMPANY_NAME} on GitHub`,
     HREF: 'https://github.com/iTowns/itowns',
   },
-  {
-    NAME: 'Website',
-    ICON: 'link',
-    LABEL: `${SITE.COMPANY_NAME} website`,
-    HREF: 'https://www.itowns-project.org/',
-  },
 ];

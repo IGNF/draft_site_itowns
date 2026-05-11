@@ -30,11 +30,7 @@ const contributorsUrl =
 
 <header id="header" class="header">
     <div class="mobile-overlay"></div>
-    <nav
-        class="section-container nav-container"
-        role="navigation"
-        aria-label="Main navigation"
-    >
+    <nav class="nav-container" role="navigation" aria-label="Main navigation">
         <div class="logo-container">
             <a
                 href={import.meta.env.BASE_URL}
@@ -215,8 +211,6 @@ const contributorsUrl =
     </nav>
 </header>
 
-<div id="trigger" class="trigger"></div>
-
 <style>
     .header {
         position: fixed;
@@ -225,10 +219,16 @@ const contributorsUrl =
         width: 100%;
         height: var(--h-menu-bar);
         display: flex;
-        padding-inline: var(--px-32);
+        padding-inline: 0;
         z-index: var(--z-max);
         transition: all var(--transition-short);
         color: var(--color-text-primary);
+    }
+
+    .header > .nav-container {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: 100%;
     }
 
     .header-trailing {
@@ -282,12 +282,41 @@ const contributorsUrl =
     .nav-container {
         position: relative;
         z-index: calc(var(--z-50) + 1);
+        box-sizing: border-box;
         width: 100%;
+        max-width: none;
+        margin: 0;
+        padding-inline: max(var(--px-24), env(safe-area-inset-left, 0px)) max(var(--px-64), env(safe-area-inset-right, 0px));
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-size: var(--text-base);
         font-weight: 500;
+    }
+
+    @media screen and (min-width: 64.0625rem) {
+        .nav-content {
+            flex: 1 1 auto;
+            display: flex;
+            justify-content: center;
+            min-width: 0;
+            max-width: none;
+            overflow: visible;
+            opacity: 1;
+            transition:
+                opacity 0.25s ease,
+                max-width 0.35s ease,
+                flex-basis 0.35s ease;
+        }
+
+        .header.scrolled .nav-content {
+            flex: 0 1 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            visibility: hidden;
+        }
     }
 
     .logo-container {
@@ -537,10 +566,6 @@ const contributorsUrl =
         pointer-events: auto;
     }
 
-    .trigger {
-        height: 1px;
-    }
-
     @media (hover: hover) and (pointer: fine) {
         .nav-link:hover {
             opacity: 1;
@@ -548,8 +573,8 @@ const contributorsUrl =
     }
 
     @media screen and (max-width: 64rem) {
-        .header {
-            padding-inline: var(--px-16);
+        .nav-container {
+            padding-inline: max(var(--px-20), env(safe-area-inset-left, 0px)) max(var(--px-28), env(safe-area-inset-right, 0px));
         }
 
         .hamburger {
@@ -603,6 +628,12 @@ const contributorsUrl =
             transform: translateY(-0.563rem) rotate(-45deg);
         }
     }
+
+    @media screen and (max-width: 42.188rem) {
+        .nav-container {
+            padding-inline: max(var(--px-16), env(safe-area-inset-left, 0px)) max(var(--px-20), env(safe-area-inset-right, 0px));
+        }
+    }
 </style>
 
 <script define:vars={{ baseUrl: import.meta.env.BASE_URL }}>
@@ -612,11 +643,14 @@ const contributorsUrl =
 
         if (!trigger || !header) return;
 
+        const scrollRoot = document.getElementById("page-scroll");
         const observer = new IntersectionObserver(
             ([entry]) => {
                 header.classList.toggle("scrolled", !entry.isIntersecting);
             },
-            { threshold: 0 },
+            scrollRoot
+                ? { root: scrollRoot, threshold: 0 }
+                : { threshold: 0 },
         );
 
         observer.observe(trigger);
@@ -671,7 +705,12 @@ const contributorsUrl =
                 );
             }
 
-            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+            const scrollRoot = document.getElementById("page-scroll");
+            if (scrollRoot) {
+                scrollRoot.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+            } else {
+                window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+            }
         };
 
         logoLink.addEventListener("click", handleLogoClick);
@@ -729,16 +768,22 @@ const contributorsUrl =
         };
     }
 
-    let headerCleanup = observeHeader();
-    let logoCleanup = initLogoHomeBehavior();
-    let menuCleanup = initMobileMenu();
+    let headerCleanup: (() => void) | undefined;
+    let logoCleanup: (() => void) | undefined;
+    let menuCleanup: (() => void) | undefined;
 
-    document.addEventListener("astro:after-swap", () => {
+    function mountAll() {
         if (headerCleanup) headerCleanup();
         if (logoCleanup) logoCleanup();
         if (menuCleanup) menuCleanup();
         headerCleanup = observeHeader();
         logoCleanup = initLogoHomeBehavior();
         menuCleanup = initMobileMenu();
+    }
+
+    requestAnimationFrame(mountAll);
+
+    document.addEventListener("astro:after-swap", () => {
+        mountAll();
     });
 </script>

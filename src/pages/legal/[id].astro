@@ -32,7 +32,8 @@ const { Content } = await render(doc);
     max-width: 80ch;
     margin: 0 auto;
     padding: var(--px-32) var(--px-16);
-    margin-top: var(--px-80);
+    /* Même logique que le hero : la zone scroll est déjà sous le menu */
+    margin-top: max(var(--px-12), calc(var(--px-80) - var(--h-menu-bar) - var(--px-12)));
   }
 
   .content {
@@ -113,7 +114,7 @@ const { Content } = await render(doc);
   @media (max-width: 64rem) {
     .legal-document {
       padding: var(--px-16);
-      margin-top: var(--px-64);
+      margin-top: max(var(--px-8), calc(var(--px-64) - var(--h-menu-bar) - var(--px-12)));
     }
 
     .content :global(ul),

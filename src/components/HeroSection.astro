@@ -8,7 +8,7 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
         <div class="hero-content">
             <h1 class="hero-title">Visualising 3D geospatial data with iTowns.</h1>
             <p class="hero-subtitle">
-                Build your own geographic service with an open-source framework
+                Build your own 3D geographic service with an open-source framework
                 designed for globe and planar visualization on the web.
             </p>
             <div class="hero-cta">
@@ -80,7 +80,22 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
         return x * x * (3 - 2 * x);
     }
 
+    function getScrollRoot(): HTMLElement | null {
+        return document.getElementById("page-scroll");
+    }
+
+    function getScrollY(): number {
+        const root = getScrollRoot();
+        return root != null ? root.scrollTop : window.scrollY;
+    }
+
     function docTop(el: Element): number {
+        const root = getScrollRoot();
+        if (root != null && root.contains(el)) {
+            const er = el.getBoundingClientRect();
+            const rr = root.getBoundingClientRect();
+            return er.top - rr.top + root.scrollTop;
+        }
         const r = el.getBoundingClientRect();
         return r.top + window.scrollY;
     }
@@ -89,7 +104,7 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
         const globe = document.querySelector("[data-hero-globe]");
         if (!(globe instanceof HTMLElement)) return;
 
-        const scrollY = window.scrollY;
+        const scrollY = getScrollY();
         const vh = window.innerHeight;
 
         /** Initial hero fade (~1.25× viewport height, min 520px). */
@@ -145,7 +160,10 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
     }
 
     updateHeroGlobeScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    requestAnimationFrame(() => {
+        const scrollTarget = document.getElementById("page-scroll") ?? window;
+        scrollTarget.addEventListener("scroll", onScroll, { passive: true });
+    });
     window.addEventListener("resize", onScroll, { passive: true });
     document.addEventListener("astro:after-swap", updateHeroGlobeScroll);
 </script>
@@ -153,7 +171,9 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
 <style>
     .hero {
         min-height: 100vh;
-        padding-block: 6.688rem var(--px-56);
+        /* #page-scroll commence déjà sous le menu : ne pas cumuler l’ancien décalage “sous header” */
+        padding-block: max(var(--px-12), calc(6.688rem - var(--h-menu-bar) - var(--px-12)))
+            var(--px-56);
         display: flex;
         align-items: center;
     }
@@ -281,6 +301,7 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
             width: min(37.5rem, calc((min(90rem, 100vw) - var(--px-64) * 2 - var(--px-64)) / 2));
             z-index: 0;
             max-width: calc(50vw - var(--px-48));
+            transform: translateX(var(--px-8));
         }
     }
 

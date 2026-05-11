@@ -147,10 +147,13 @@ const schemaData = {
         <a href="#main" class="skip-link">Skip to content</a>
 
         <Header />
-        <main id="main" tabindex="-1">
-            <slot />
-        </main>
-        <Footer />
+        <div id="page-scroll" class="page-scroll">
+            <div id="trigger" class="trigger" aria-hidden="true"></div>
+            <main id="main" tabindex="-1">
+                <slot />
+            </main>
+            <Footer />
+        </div>
 
         <script is:inline>
             (function () {

@@ -22,6 +22,11 @@ const communityContent = {
   title: "Open source and community",
 };
 
+const multipleFormatSupport = {
+  title: "Multiple format support",
+  text: "From OGC 3D Tiles and vector layers to terrain, imagery, and point clouds, iTowns combines many data families in one web viewer. Load GeoTIFF or COG rasters, Mapbox Vector Tiles, Potree / EPT / COPC or LAS point clouds, and WMS or streaming services in the same scene—so your app stays aligned with common GIS and BIM pipelines.",
+};
+
 const EXAMPLES_BASE = "https://itowns.github.io/itowns/examples";
 
 const viewerSlides = [
@@ -66,7 +71,7 @@ const viewerSlides = [
 
 <section id="about" class="about">
   <div class="section-container">
-    <h2 class="section-title">Build your own geographic service.</h2>
+    <h2 class="section-title">Build your own 3D geographic service.</h2>
 
     <div class="about-container">
       <div class="about-image-wrapper">
@@ -106,10 +111,12 @@ const viewerSlides = [
         </BaseSwiper>
       </div>
       <div class="about-content">
-        <h3 class="section-subtitle about-subtitle">{technologyContent.title}</h3>
-        <p class="about-text">{technologyContent.text}</p>
+        <div class="about-block">
+          <h3 class="section-subtitle about-subtitle">{technologyContent.title}</h3>
+          <p class="about-text">{technologyContent.text}</p>
+        </div>
 
-        <div class="about-toolkit">
+        <div class="about-toolkit about-block">
           <h3 class="section-subtitle about-toolkit-heading">
             Swiss army knife for geographic data
           </h3>
@@ -121,8 +128,9 @@ const viewerSlides = [
           </p>
         </div>
 
-        <h3 class="section-subtitle about-subtitle">{communityContent.title}</h3>
-        <p class="about-text">
+        <div class="about-block">
+          <h3 class="section-subtitle about-subtitle">{communityContent.title}</h3>
+          <p class="about-text">
             iTowns is based on{" "}
             <a
                 href="https://github.com/iTowns/itowns-governance"
@@ -132,7 +140,15 @@ const viewerSlides = [
             >{" "}
             that allows everyone to contribute. The project brings together developers,
             researchers, and geospatial stakeholders to evolve the framework together.
-        </p>
+          </p>
+        </div>
+
+        <div class="about-formats about-block">
+          <h3 class="section-subtitle about-formats-heading">
+            {multipleFormatSupport.title}
+          </h3>
+          <p class="about-formats-lead">{multipleFormatSupport.text}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -174,22 +190,54 @@ const viewerSlides = [
     font-size: clamp(1rem, 0.68rem + 2.55vi, 3rem);
     line-height: 1.14;
     text-wrap: balance;
+    margin-bottom: var(--px-40, 2.5rem);
+  }
+
+  .about-content {
+    max-width: 37.5rem;
+    font-size: clamp(0.875rem, 0.82rem + 0.2vi, 0.9375rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--px-24, 1.5rem);
+  }
+
+  .about-content > .about-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--px-8, 0.5rem);
+  }
+
+  .about-content .about-block :is(.section-subtitle) {
+    font-size: clamp(1rem, 0.92rem + 0.35vi, var(--text-lg));
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.28;
+  }
+
+  .about-content .about-text,
+  .about-content .about-toolkit-lead,
+  .about-content .about-formats-lead {
+    line-height: 1.52;
+    margin: 0;
+  }
+
+  .about-content .about-toolkit-lead,
+  .about-content .about-formats-lead {
+    opacity: 0.92;
+  }
+
+  .about-content .about-formats-lead {
+    max-width: none;
   }
 
   .about-content .about-toolkit {
-    margin-bottom: var(--px-16, 1rem);
-    padding-bottom: var(--px-20, 1.25rem);
-    border-bottom: 1px solid var(--color-border-faint);
+    margin: 0;
+    padding: 0;
+    border: none;
   }
 
   .about-toolkit-heading {
-    margin-bottom: var(--px-16, 1rem);
-  }
-
-  .about-toolkit-lead {
-    margin: 0 0 var(--px-20, 1.25rem);
-    line-height: 1.6;
-    opacity: 0.92;
+    margin: 0;
   }
 
   .about-toolkit-lead a {
@@ -224,6 +272,12 @@ const viewerSlides = [
   .about-image-wrapper {
     width: 100%;
     min-width: 0;
+  }
+
+  @media screen and (min-width: 48.0625rem) {
+    .about-image-wrapper {
+      margin-top: var(--px-28, 1.75rem);
+    }
   }
 
   .about-image-wrapper :global(.about-showcase) {
@@ -282,18 +336,6 @@ const viewerSlides = [
     .about-slide-test:hover {
       opacity: 0.75;
     }
-  }
-
-  .about-content {
-    max-width: 37.5rem;
-  }
-
-  .about-text {
-    margin-bottom: var(--px-32);
-  }
-
-  .about-text:last-child {
-    margin-bottom: 0;
   }
 
   .about-text a {

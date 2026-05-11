@@ -30,7 +30,8 @@ const { title, description, errorCode, errorMessage, errorDescription } =
   <style>
     .error {
       min-height: 100vh;
-      padding-block: 6.688rem var(--px-56);
+      padding-block: max(var(--px-12), calc(6.688rem - var(--h-menu-bar) - var(--px-12)))
+        var(--px-56);
       display: flex;
       align-items: center;
       justify-content: center;

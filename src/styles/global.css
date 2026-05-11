@@ -5,13 +5,40 @@
 }
 
 html {
+  height: 100%;
   scroll-behavior: smooth;
 }
 
 body {
+  height: 100%;
+  overflow: hidden;
   font-size: var(--text-base);
   background-color: var(--color-background);
   color: var(--color-text-primary);
+}
+
+/* Défilement sous le menu fixe : zone dédiée sous la barre (pas le document entier) */
+.page-scroll {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: var(--h-menu-bar);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
+  transition: top var(--transition-short, 0.15s) ease;
+}
+
+html:has(#header.scrolled) .page-scroll {
+  top: var(--h-menu-bar-scrolled);
+}
+
+.page-scroll > .trigger {
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
 }
 
 section {
@@ -53,6 +80,10 @@ p {
 }
 
 .no-scroll {
+  overflow: hidden;
+}
+
+.no-scroll #page-scroll {
   overflow: hidden;
 }
 

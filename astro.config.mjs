@@ -5,9 +5,14 @@ import { SITE } from "./src/consts";
 import sitemap from "@astrojs/sitemap";
 import favicons from "astro-favicons";
 
+/** GitHub Pages (projet) : SITE_URL + BASE_PATH via le workflow CI. */
+const siteURL = process.env.SITE_URL || SITE.CANONICAL_URL;
+const basePath = process.env.BASE_PATH || "/";
+
 // https://astro.build/config
 export default defineConfig({
-  site: SITE.CANONICAL_URL,
+  site: siteURL,
+  base: basePath,
   output: "static",
 
   devToolbar: {

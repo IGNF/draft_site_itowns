@@ -20,7 +20,9 @@ const { title, description, errorCode, errorMessage, errorDescription } =
         <h1 class="error-title">{errorCode}</h1>
         <p class="error-message">{errorMessage}</p>
         <p class="error-description">{errorDescription}</p>
-        <a href="/" class="btn btn--primary">GO TO HOMEPAGE</a>
+        <a href={import.meta.env.BASE_URL} class="btn btn--primary">
+          GO TO HOMEPAGE
+        </a>
       </div>
     </div>
   </section>

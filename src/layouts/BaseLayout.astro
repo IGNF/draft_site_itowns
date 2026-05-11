@@ -50,16 +50,39 @@ const schemaData = {
 ---
 
 <!doctype html>
-<html lang=`${SITE.LOCALE ?? "en"}`>
+<html lang={`${SITE.LOCALE ?? "en"}`} data-theme="dark">
     <head>
         <meta charset="UTF-8" />
         <meta
             name="theme-color"
-            content="#f1f1f1"
+            content="#0f0f0f"
             id="meta-theme-color"
         />
-        <!-- Fichier externe : compatible CSP (script inline non haché = bloqué en prod). -->
-        <script src={`${import.meta.env.BASE_URL}theme-init.js`}></script>
+        <script is:inline>
+            (function () {
+                try {
+                    var k = "itowns-theme";
+                    var s = localStorage.getItem(k);
+                    /* Défaut : sombre. "light" / "dark" explicites uniquement. */
+                    var isDark =
+                        s === "light" ? false : s === "dark" ? true : true;
+                    document.documentElement.dataset.theme = isDark
+                        ? "dark"
+                        : "light";
+                    var meta = document.getElementById("meta-theme-color");
+                    if (meta) {
+                        meta.setAttribute(
+                            "content",
+                            isDark ? "#0f0f0f" : "#f1f1f1",
+                        );
+                    }
+                } catch (e) {
+                    document.documentElement.dataset.theme = "dark";
+                    var meta = document.getElementById("meta-theme-color");
+                    if (meta) meta.setAttribute("content", "#0f0f0f");
+                }
+            })();
+        </script>
         <meta name="viewport" content="width=device-width" />
         <link
             rel="icon"
@@ -128,6 +151,82 @@ const schemaData = {
             <slot />
         </main>
         <Footer />
+
+        <script is:inline>
+            (function () {
+                var KEY = "itowns-theme";
+                function readIsDark() {
+                    try {
+                        var s = localStorage.getItem(KEY);
+                        if (s === "light") return false;
+                        if (s === "dark") return true;
+                        return true;
+                    } catch (e) {
+                        return true;
+                    }
+                }
+                function applyTheme(isDark) {
+                    document.documentElement.dataset.theme = isDark
+                        ? "dark"
+                        : "light";
+                    var meta = document.getElementById("meta-theme-color");
+                    if (meta) {
+                        meta.setAttribute(
+                            "content",
+                            isDark ? "#0f0f0f" : "#f1f1f1",
+                        );
+                    }
+                    var nodes = document.querySelectorAll(".theme-toggle");
+                    for (var i = 0; i < nodes.length; i++) {
+                        var btn = nodes[i];
+                        if (
+                            btn &&
+                            btn.setAttribute &&
+                            btn.tagName === "BUTTON"
+                        ) {
+                            btn.setAttribute(
+                                "aria-pressed",
+                                isDark ? "true" : "false",
+                            );
+                            btn.setAttribute(
+                                "aria-label",
+                                isDark
+                                    ? "Enable light theme"
+                                    : "Enable dark theme",
+                            );
+                        }
+                    }
+                }
+                function toggleTheme() {
+                    var isDark =
+                        document.documentElement.dataset.theme === "dark";
+                    var next = !isDark;
+                    try {
+                        localStorage.setItem(KEY, next ? "dark" : "light");
+                    } catch (e) {}
+                    applyTheme(next);
+                }
+                function onDocClickCapture(e) {
+                    if (e.button !== 0) return;
+                    var t = e.target;
+                    if (!t || typeof t.closest !== "function") return;
+                    if (!t.closest(".theme-toggle")) return;
+                    toggleTheme();
+                }
+                function onAfterSwap() {
+                    applyTheme(readIsDark());
+                }
+                if (!window.__itownsThemeUiBound) {
+                    window.__itownsThemeUiBound = true;
+                    document.addEventListener("click", onDocClickCapture, true);
+                    document.addEventListener(
+                        "astro:after-swap",
+                        onAfterSwap,
+                    );
+                }
+                applyTheme(readIsDark());
+            })();
+        </script>
     </body>
 </html>
 

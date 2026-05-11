@@ -20,26 +20,7 @@ const technologyContent = {
 
 const communityContent = {
   title: "Open source and community",
-  text: "iTowns is based on open governance that allows everyone to contribute. The project brings together developers, researchers, and geospatial stakeholders to evolve the framework together.",
 };
-
-const useCases = [
-  {
-    title: "Globe applications",
-    content:
-      "Visualize data in global coordinates for earth-scale exploration and storytelling.",
-  },
-  {
-    title: "Planar GIS workflows",
-    content:
-      "Display data in projected local CRS for city, infrastructure, and cadastral-style applications.",
-  },
-  {
-    title: "Digital twins",
-    content:
-      "Combine point clouds, terrain, orthophotos, vector layers, and 3D tiles in one scene.",
-  },
-];
 
 const EXAMPLES_BASE = "https://itowns.github.io/itowns/examples";
 
@@ -141,24 +122,17 @@ const viewerSlides = [
         </div>
 
         <h3 class="section-subtitle about-subtitle">{communityContent.title}</h3>
-        <p class="about-text">{communityContent.text}</p>
-      </div>
-    </div>
-
-    <div id="use-cases" class="about-use-cases">
-      <div class="about-use-case-cards">
-        {
-          useCases.map((item) => (
-            <div class="about-use-case-wrap">
-              <article class="about-use-case-card">
-                <h3 class="about-use-case-title">{item.title}</h3>
-                <blockquote class="about-use-case-quote">
-                  <p>{item.content}</p>
-                </blockquote>
-              </article>
-            </div>
-          ))
-        }
+        <p class="about-text">
+            iTowns is based on{" "}
+            <a
+                href="https://github.com/iTowns/itowns-governance"
+                target="_blank"
+                rel="noopener noreferrer"
+                >open governance</a
+            >{" "}
+            that allows everyone to contribute. The project brings together developers,
+            researchers, and geospatial stakeholders to evolve the framework together.
+        </p>
       </div>
     </div>
   </div>
@@ -322,38 +296,17 @@ const viewerSlides = [
     margin-bottom: 0;
   }
 
-  .about-use-cases {
-    margin-top: var(--px-64);
+  .about-text a {
+    font-weight: 500;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    transition: opacity var(--transition-short);
   }
 
-  .about-use-case-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--px-24);
-  }
-
-  .about-use-case-card {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--color-border-card);
-    border-radius: var(--radius-lg);
-    padding: var(--px-24);
-    min-height: 100%;
-  }
-
-  .about-use-case-title {
-    font-size: var(--text-xl);
-    font-weight: 600;
-    font-style: normal;
-    margin-bottom: var(--px-16);
-  }
-
-  .about-use-case-quote {
-    margin: 0;
-  }
-
-  .about-use-case-quote p {
-    margin: 0;
+  @media (hover: hover) and (pointer: fine) {
+    .about-text a:hover {
+      opacity: 0.75;
+    }
   }
 
   @media screen and (max-width: 64rem) {
@@ -363,10 +316,6 @@ const viewerSlides = [
 
     .about-content {
       max-width: 100%;
-    }
-
-    .about-use-case-cards {
-      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -378,10 +327,6 @@ const viewerSlides = [
 
     .about-image-wrapper {
       order: -1;
-    }
-
-    .about-use-case-cards {
-      grid-template-columns: 1fr;
     }
   }
 </style>

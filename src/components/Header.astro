@@ -98,8 +98,8 @@ const contributorsUrl =
                 type="button"
                 class="theme-toggle"
                 title="Toggle light / dark theme"
-                aria-label="Enable dark theme"
-                aria-pressed="false"
+                aria-label="Enable light theme"
+                aria-pressed="true"
             >
                 <svg
                     class="theme-toggle-icon theme-toggle-moon"
@@ -281,6 +281,7 @@ const contributorsUrl =
 
     .nav-container {
         position: relative;
+        z-index: calc(var(--z-50) + 1);
         width: 100%;
         display: flex;
         align-items: center;
@@ -525,12 +526,15 @@ const contributorsUrl =
         z-index: var(--z-50);
         opacity: 0;
         visibility: hidden;
+        /* Sinon l’overlay plein écran (z-50) capte les clics au-dessus de la nav (z auto). */
+        pointer-events: none;
         transition: all 0.3s ease;
     }
 
     .mobile-overlay.active {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
     }
 
     .trigger {
@@ -725,62 +729,16 @@ const contributorsUrl =
         };
     }
 
-    const THEME_STORAGE_KEY = "itowns-theme";
-
-    function initThemeToggle() {
-        const btn = document.querySelector(
-            ".theme-toggle",
-        ) as HTMLButtonElement | null;
-        if (!btn) return;
-
-        function syncFromDocument() {
-            const dark = document.documentElement.dataset.theme === "dark";
-            btn.setAttribute("aria-pressed", dark ? "true" : "false");
-            btn.setAttribute(
-                "aria-label",
-                dark ? "Enable light theme" : "Enable dark theme",
-            );
-            const meta = document.getElementById("meta-theme-color");
-            if (meta) {
-                meta.setAttribute("content", dark ? "#0f0f0f" : "#f1f1f1");
-            }
-        }
-
-        function onToggle() {
-            const nextDark = document.documentElement.dataset.theme !== "dark";
-            document.documentElement.dataset.theme = nextDark ? "dark" : "light";
-            try {
-                localStorage.setItem(
-                    THEME_STORAGE_KEY,
-                    nextDark ? "dark" : "light",
-                );
-            } catch {
-                /* ignore */
-            }
-            syncFromDocument();
-        }
-
-        syncFromDocument();
-        btn.addEventListener("click", onToggle);
-
-        return () => {
-            btn.removeEventListener("click", onToggle);
-        };
-    }
-
     let headerCleanup = observeHeader();
     let logoCleanup = initLogoHomeBehavior();
     let menuCleanup = initMobileMenu();
-    let themeCleanup = initThemeToggle();
 
     document.addEventListener("astro:after-swap", () => {
         if (headerCleanup) headerCleanup();
         if (logoCleanup) logoCleanup();
         if (menuCleanup) menuCleanup();
-        if (themeCleanup) themeCleanup();
         headerCleanup = observeHeader();
         logoCleanup = initLogoHomeBehavior();
         menuCleanup = initMobileMenu();
-        themeCleanup = initThemeToggle();
     });
 </script>

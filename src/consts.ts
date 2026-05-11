@@ -22,6 +22,12 @@ export const SITE: Site = {
 
 export const SOCIALS: Socials = [
   {
+    NAME: 'Discord',
+    ICON: 'discord',
+    LABEL: `${SITE.COMPANY_NAME} on Discord`,
+    HREF: 'https://discord.com/channels/1024249405634781244/1024249406461071412',
+  },
+  {
     NAME: 'GitHub',
     ICON: 'github',
     LABEL: `${SITE.COMPANY_NAME} on GitHub`,

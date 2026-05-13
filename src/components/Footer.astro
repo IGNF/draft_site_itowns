@@ -2,6 +2,7 @@
 import { Fragment } from "astro/jsx-runtime";
 import { SITE, SOCIALS } from "@consts";
 import socialIcons from "@assets/socialIcons";
+import I18n from "@components/I18n.astro";
 
 const currentYear = new Date().getFullYear();
 /** Top of page (hero): hash on home, absolute link from other routes. */
@@ -18,39 +19,60 @@ const homeTopHref = Astro.url.pathname === "/" ? "#hero" : "/#hero";
             >
                 iTowns
             </a>
-            <p class="site-description">{SITE.DESCRIPTION}</p>
+            <p class="site-description">
+                <I18n
+                    en={SITE.DESCRIPTION}
+                    fr="Avec iTowns, créez votre propre service géographique : globe, cartes planes, 3D Tiles, tuiles vectorielles, nuages de points et imagerie raster."
+                />
+            </p>
 
             <address class="footer-nav-list contact-info">
                 <p class="email">
-                    <span class="label">E.</span>
+                    <span class="label"><I18n en="E." fr="E-mail" /></span>
                     <a href=`mailto:${SITE.EMAIL}`>{SITE.EMAIL}</a>
                 </p>
             </address>
         </div>
 
-        <nav class="footer-navigation" aria-label="Footer navigation">
+        <nav class="footer-navigation" aria-labelledby="footer-nav-title">
+            <span id="footer-nav-title" class="sr-only">
+                <I18n
+                    en="Footer navigation"
+                    fr="Navigation de pied de page"
+                />
+            </span>
             <div class="footer-nav-section">
-                <h2 class="headline footer-heading">Navigation</h2>
+                <h2 class="headline footer-heading">
+                    <I18n en="Navigation" fr="Navigation" />
+                </h2>
                 <ul class="footer-nav-list">
                     <li>
-                        <a href="#hero" class="footer-link">Home</a>
+                        <a href="#hero" class="footer-link"
+                            ><I18n en="Home" fr="Accueil" /></a
+                        >
                     </li>
                     <li>
-                        <a href="#portfolio" class="footer-link">Viewers</a>
+                        <a href="#portfolio" class="footer-link"
+                            ><I18n en="Viewers" fr="Visionneuses" /></a
+                        >
                     </li>
                     <li>
-                        <a href="#license" class="footer-link">License</a>
+                        <a href="#license" class="footer-link"
+                            ><I18n en="License" fr="Licence" /></a
+                        >
                     </li>
                     <li>
                         <a href={`mailto:${SITE.EMAIL}`} class="footer-link"
-                            >Contact</a
+                            ><I18n en="Contact" fr="Contact" /></a
                         >
                     </li>
                 </ul>
             </div>
 
             <div class="footer-nav-section">
-                <h2 class="headline footer-heading">Community</h2>
+                <h2 class="headline footer-heading">
+                    <I18n en="Community" fr="Communauté" />
+                </h2>
                 <ul class="footer-nav-list social-links-list">
                     <li class="social-item">
                         <a
@@ -58,10 +80,12 @@ const homeTopHref = Astro.url.pathname === "/" ? "#hero" : "/#hero";
                             class="footer-link social-link"
                             target="_blank"
                             rel="noopener noreferrer"
+                            data-aria-en="iTowns governance on GitHub"
+                            data-aria-fr="Gouvernance iTowns sur GitHub"
                             aria-label="iTowns governance on GitHub"
                         >
                             <Fragment set:html={socialIcons.github} />
-                            Governance
+                            <I18n en="Governance" fr="Gouvernance" />
                         </a>
                     </li>
                     {
@@ -70,10 +94,14 @@ const homeTopHref = Astro.url.pathname === "/" ? "#hero" : "/#hero";
                                 <li class="social-item">
                                     <a
                                         href={social.HREF}
-                                        aria-label={social.LABEL}
                                         class="footer-link social-link"
                                         target="_blank"
                                         rel="noopener noreferrer"
+                                        data-aria-en={social.LABEL}
+                                        data-aria-fr={
+                                            social.LABEL_FR ?? social.LABEL
+                                        }
+                                        aria-label={social.LABEL}
                                     >
                                         <Fragment
                                             set:html={socialIcons[social.ICON]}
@@ -91,7 +119,14 @@ const homeTopHref = Astro.url.pathname === "/" ? "#hero" : "/#hero";
 
     <div class="footer footer-secondary">
         <div class="copyright">
-            <p>&copy; {SITE.COMPANY_NAME} {currentYear}.</p>
+            <p>
+                <span class="i18n-en"
+                    >&copy; {SITE.COMPANY_NAME} {currentYear}.</span
+                >
+                <span class="i18n-fr"
+                    >&copy; {SITE.COMPANY_NAME} {currentYear}. Tous droits réservés.</span
+                >
+            </p>
         </div>
     </div>
 </footer>

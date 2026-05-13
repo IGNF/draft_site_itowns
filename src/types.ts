@@ -20,5 +20,7 @@ export type Socials = {
   NAME: string;
   ICON: keyof typeof socialIcons;
   LABEL: string;
+  /** Libellé d’accessibilité en français (aria-label). */
+  LABEL_FR?: string;
   HREF: string;
 }[];

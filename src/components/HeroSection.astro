@@ -1,15 +1,24 @@
 ---
 /** Globe matching view_3d_map (ortho + elevation), no GUI — see /public/itowns-globe-minimal.html */
+import I18n from "@components/I18n.astro";
+
 const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
 ---
 
 <section id="hero" class="hero">
     <div class="section-container hero-container">
         <div class="hero-content">
-            <h1 class="hero-title">Visualising 3D geospatial data with iTowns.</h1>
+            <h1 class="hero-title">
+                <I18n
+                    en="Visualising 3D geospatial data with iTowns."
+                    fr="Visualiser des données géospatiales 3D avec iTowns."
+                />
+            </h1>
             <p class="hero-subtitle">
-                Build your own 3D geographic service with an open-source framework
-                designed for globe and planar visualization on the web.
+                <I18n
+                    en="Build your own 3D geographic service with an open-source framework designed for globe and planar visualization on the web."
+                    fr="Créez votre propre service géographique 3D avec une bibliothèque open source pensée pour la visualisation globe ou plane sur le web."
+                />
             </p>
             <div class="hero-cta">
                 <a
@@ -17,7 +26,10 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
                     class="btn btn--primary"
                     target="_blank"
                     rel="noopener noreferrer"
-                    >START A NEW PROJECT</a
+                    ><I18n
+                        en="START A NEW PROJECT"
+                        fr="DÉMARRER UN PROJET"
+                    /></a
                 >
                 <a
                     href="https://github.com/iTowns/iTowns"
@@ -35,7 +47,10 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
                                 d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
                             ></path>
                         </svg>
-                        Explore Code Source
+                        <I18n
+                            en="Explore Code Source"
+                            fr="Explorer le code source"
+                        />
                     </span>
                     <span
                         class="btn--secondary btn--secondary-hovered"
@@ -50,7 +65,10 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
                                 d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"
                             ></path>
                         </svg>
-                        Explore Code Source
+                        <I18n
+                            en="Explore Code Source"
+                            fr="Explorer le code source"
+                        />
                     </span>
                 </a>
             </div>
@@ -61,7 +79,7 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
                 <div class="globe-frame-shell">
                     <iframe
                         src={heroExampleUrl}
-                        title="iTowns globe — ortho and elevation, no UI"
+                        title="Globe iTowns — ortho et relief, sans interface (iTowns globe — ortho and elevation, no UI)"
                         class="globe-iframe"
                         loading="eager"
                         referrerpolicy="strict-origin-when-cross-origin"
@@ -172,7 +190,7 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
     .hero {
         min-height: 100vh;
         /* #page-scroll commence déjà sous le menu : ne pas cumuler l’ancien décalage “sous header” */
-        padding-block: max(var(--px-12), calc(6.688rem - var(--h-menu-bar) - var(--px-12)))
+        padding-block: max(var(--px-24), calc(6.688rem - var(--h-menu-bar)))
             var(--px-56);
         display: flex;
         align-items: center;

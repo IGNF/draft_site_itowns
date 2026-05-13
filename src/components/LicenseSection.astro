@@ -3,25 +3,31 @@
  * Contenu aligné sur la page officielle :
  * https://www.itowns-project.org/about#license
  */
+import I18n from "@components/I18n.astro";
+
 const itownsLicenseUrl =
     "https://github.com/iTowns/iTowns/blob/master/LICENSE.md";
 ---
 
 <section id="license" class="license">
     <div class="section-container">
-        <h2 class="section-title">License</h2>
+        <h2 class="section-title">
+            <I18n en="License" fr="Licence" />
+        </h2>
         <p class="license-lead">
-            iTowns is distributed under permissive terms: you may use, modify,
-            publish, and sell the code, provided you retain the license and
-            copyright notices when you share it.
+            <I18n
+                en="iTowns is distributed under permissive terms: you may use, modify, publish, and sell the code, provided you retain the license and copyright notices when you share it."
+                fr="iTowns est distribué sous des conditions permissives : vous pouvez utiliser, modifier, publier et vendre le code, à condition de conserver les mentions de licence et de droits d’auteur lorsque vous le partagez."
+            />
         </p>
 
         <div class="license-block">
             <h3 class="section-subtitle license-block-title">iTowns</h3>
             <p class="license-text">
-                Full modification and redistribution rights, with citation
-                requirements and community rules as defined in the project
-                license (MIT / dual licensing with CeCILL B as applicable).
+                <I18n
+                    en="Full modification and redistribution rights, with citation requirements and community rules as defined in the project license (MIT / dual licensing with CeCILL B as applicable)."
+                    fr="Droits complets de modification et de redistribution, avec obligations de citation et règles communautaires définies dans la licence du projet (MIT / double licence avec CeCILL B le cas échéant)."
+                />
             </p>
             <ul class="license-links">
                 <li>
@@ -29,7 +35,11 @@ const itownsLicenseUrl =
                         href={itownsLicenseUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        >iTowns <code>LICENSE.md</code> on GitHub</a
+                        ><span class="i18n-en"
+                            >iTowns <code>LICENSE.md</code> on GitHub</span
+                        ><span class="i18n-fr"
+                            ><code>LICENSE.md</code> iTowns sur GitHub</span
+                        ></a
                     >
                 </li>
                 <li>
@@ -37,7 +47,7 @@ const itownsLicenseUrl =
                         href="https://opensource.org/license/mit/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        >MIT License</a
+                        ><I18n en="MIT License" fr="Licence MIT" /></a
                     >
                 </li>
                 <li>
@@ -91,7 +101,7 @@ const itownsLicenseUrl =
     .license-links a {
         border-bottom: 2px solid currentColor;
         padding-bottom: 2px;
-        transition: opacity var(--transition-short, 0.15s ease);
+        transition: opacity var(--transition-short, 0.15s) ease;
     }
 
     @media (hover: hover) and (pointer: fine) {

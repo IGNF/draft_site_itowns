@@ -25,12 +25,14 @@ export const SOCIALS: Socials = [
     NAME: 'Discord',
     ICON: 'discord',
     LABEL: `${SITE.COMPANY_NAME} on Discord`,
+    LABEL_FR: `${SITE.COMPANY_NAME} sur Discord`,
     HREF: 'https://discord.com/channels/1024249405634781244/1024249406461071412',
   },
   {
     NAME: 'GitHub',
     ICON: 'github',
     LABEL: `${SITE.COMPANY_NAME} on GitHub`,
+    LABEL_FR: `${SITE.COMPANY_NAME} sur GitHub`,
     HREF: 'https://github.com/iTowns/itowns',
   },
 ];

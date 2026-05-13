@@ -4,6 +4,7 @@
  * https://www.itowns-project.org/
  */
 import BaseSwiper from "@components/BaseSwiper.astro";
+import I18n from "@components/I18n.astro";
 import { Image } from "astro:assets";
 /** Captures de la home officielle : /assets/images/home-examples/ (copiées en local). */
 import picGlobe from "/src/assets/images/home-examples/example-globe.png";
@@ -14,56 +15,89 @@ import picCopc from "/src/assets/images/home-examples/example-copc.png";
 import picDsm from "/src/assets/images/home-examples/example-dsm.png";
 
 const technologyContent = {
-  title: "Technology and purpose",
-  text: "iTowns is designed to help developers integrate mapping and 3D visualization in web applications, from operational GIS interfaces to digital twin experiences.",
+  title: {
+    en: "Technology and purpose",
+    fr: "Technologie et objectifs",
+  },
+  text: {
+    en: "iTowns is designed to help developers integrate mapping and 3D visualization in web applications, from operational GIS interfaces to digital twin experiences.",
+    fr: "iTowns aide les développeurs à intégrer cartographie et visualisation 3D dans des applications web, des interfaces SIG opérationnelles aux expériences de jumeau numérique.",
+  },
 };
 
 const communityContent = {
-  title: "Open source and community",
+  title: {
+    en: "Open source and community",
+    fr: "Open source et communauté",
+  },
 };
 
 const multipleFormatSupport = {
-  title: "Multiple format support",
-  text: "From OGC 3D Tiles and vector layers to terrain, imagery, and point clouds, iTowns combines many data families in one web viewer. Load GeoTIFF or COG rasters, Mapbox Vector Tiles, Potree / EPT / COPC or LAS point clouds, and WMS or streaming services in the same scene—so your app stays aligned with common GIS and BIM pipelines.",
+  title: {
+    en: "Multiple format support",
+    fr: "Prise en charge de nombreux formats",
+  },
+  text: {
+    en: "From OGC 3D Tiles and vector layers to terrain, imagery, and point clouds, iTowns combines many data families in one web viewer. Load GeoTIFF or COG rasters, Mapbox Vector Tiles, Potree / EPT / COPC or LAS point clouds, and WMS or streaming services in the same scene—so your app stays aligned with common GIS and BIM pipelines.",
+    fr: "Des 3D Tiles OGC et couches vectorielles au relief, à l’imagerie et aux nuages de points, iTowns réunit de nombreuses familles de données dans une visionneuse web. Chargez des rasters GeoTIFF ou COG, des tuiles vectorielles Mapbox, des nuages de points Potree / EPT / COPC ou LAS, et des services WMS ou flux dans une même scène — pour rester aligné avec les chaînes SIG et BIM courantes.",
+  },
 };
 
 const EXAMPLES_BASE = "https://itowns.github.io/itowns/examples";
 
 const viewerSlides = [
   {
-    title: "Globe viewer",
+    title: { en: "Globe viewer", fr: "Visionneuse globe" },
     thumb: picGlobe,
-    thumbAlt: "Picture of the example — globe viewer",
+    thumbAlt: {
+      en: "Screenshot — globe viewer example",
+      fr: "Capture — exemple visionneuse globe",
+    },
     link: `${EXAMPLES_BASE}/view_3d_map.html`,
   },
   {
-    title: "Planar viewer",
+    title: { en: "Planar viewer", fr: "Visionneuse plane" },
     thumb: picPlanar,
-    thumbAlt: "Picture of the example — planar viewer",
+    thumbAlt: {
+      en: "Screenshot — planar viewer example",
+      fr: "Capture — exemple visionneuse plane",
+    },
     link: `${EXAMPLES_BASE}/view_25d_map.html`,
   },
   {
-    title: "Vector Tiles viewer",
+    title: { en: "Vector Tiles viewer", fr: "Visionneuse tuiles vectorielles" },
     thumb: picVector,
-    thumbAlt: "Picture of the example — vector tiles",
+    thumbAlt: {
+      en: "Screenshot — vector tiles example",
+      fr: "Capture — exemple tuiles vectorielles",
+    },
     link: `${EXAMPLES_BASE}/vector_tile_3d_mesh_mapbox.html`,
   },
   {
-    title: "3D tiles viewer",
+    title: { en: "3D tiles viewer", fr: "Visionneuse 3D Tiles" },
     thumb: pic3d,
-    thumbAlt: "Picture of the example — 3D Tiles",
+    thumbAlt: {
+      en: "Screenshot — 3D Tiles example",
+      fr: "Capture — exemple 3D Tiles",
+    },
     link: `${EXAMPLES_BASE}/3dtiles_loader.html`,
   },
   {
-    title: "Point cloud viewer",
+    title: { en: "Point cloud viewer", fr: "Visionneuse nuage de points" },
     thumb: picCopc,
-    thumbAlt: "Picture of the example — point cloud",
+    thumbAlt: {
+      en: "Screenshot — point cloud example",
+      fr: "Capture — exemple nuage de points",
+    },
     link: `${EXAMPLES_BASE}/copc_simple_loader.html?copc=https%3A%2F%2Fs3.amazonaws.com%2Fhobu-lidar%2Fautzen-classified.copc.laz`,
   },
   {
-    title: "Raster data viewer",
+    title: { en: "Raster data viewer", fr: "Visionneuse données raster" },
     thumb: picDsm,
-    thumbAlt: "Picture of the example — raster / DSM",
+    thumbAlt: {
+      en: "Screenshot — raster / DSM example",
+      fr: "Capture — exemple raster / MNS",
+    },
     link: `${EXAMPLES_BASE}/view_3d_mns_map.html`,
   },
 ];
@@ -71,7 +105,12 @@ const viewerSlides = [
 
 <section id="about" class="about">
   <div class="section-container">
-    <h2 class="section-title">Build your own 3D geographic service.</h2>
+    <h2 class="section-title">
+      <I18n
+        en="Build your own 3D geographic service."
+        fr="Créez votre propre service géographique 3D."
+      />
+    </h2>
 
     <div class="about-container">
       <div class="about-image-wrapper">
@@ -88,21 +127,23 @@ const viewerSlides = [
                   >
                     <Image
                       src={slide.thumb}
-                      alt={slide.thumbAlt}
+                      alt={`${slide.thumbAlt.en} — ${slide.thumbAlt.fr}`}
                       width={960}
                       height={540}
                       class="media"
                       loading="lazy"
                     />
                   </a>
-                  <p class="about-slide-caption">{slide.title}</p>
+                  <p class="about-slide-caption">
+                    <I18n en={slide.title.en} fr={slide.title.fr} />
+                  </p>
                   <a
                     href={slide.link}
                     class="about-slide-test"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Test the example
+                    <I18n en="Test the example" fr="Tester l'exemple" />
                   </a>
                 </div>
               </div>
@@ -112,42 +153,75 @@ const viewerSlides = [
       </div>
       <div class="about-content">
         <div class="about-block">
-          <h3 class="section-subtitle about-subtitle">{technologyContent.title}</h3>
-          <p class="about-text">{technologyContent.text}</p>
+          <h3 class="section-subtitle about-subtitle">
+            <I18n
+              en={technologyContent.title.en}
+              fr={technologyContent.title.fr}
+            />
+          </h3>
+          <p class="about-text">
+            <I18n en={technologyContent.text.en} fr={technologyContent.text.fr} />
+          </p>
         </div>
 
         <div class="about-toolkit about-block">
           <h3 class="section-subtitle about-toolkit-heading">
-            Swiss army knife for geographic data
+            <I18n
+              en="Swiss army knife for geographic data"
+              fr="Couteau suisse des données géographiques"
+            />
           </h3>
           <p class="about-toolkit-lead">
-            iTowns offers a comprehensive toolkit for visualizing, interacting and
-            composing diverse spatial datasets. Mix point clouds, terrain,
-            orthophotos and vector data in a single view : easily extend the engine for your needs,
-            build your application from simple blocks
+            <I18n
+              en="iTowns offers a comprehensive toolkit for visualizing, interacting and composing diverse spatial datasets. Mix point clouds, terrain, orthophotos and vector data in a single view: easily extend the engine for your needs, build your application from simple blocks."
+              fr="iTowns propose une boîte à outils complète pour visualiser, interagir et composer des jeux de données spatiales variés. Mélangez nuages de points, relief, orthophotos et données vectorielles dans une même vue : étendez facilement le moteur à vos besoins et assemblez votre application à partir de briques simples."
+            />
           </p>
         </div>
 
         <div class="about-block">
-          <h3 class="section-subtitle about-subtitle">{communityContent.title}</h3>
+          <h3 class="section-subtitle about-subtitle">
+            <I18n en={communityContent.title.en} fr={communityContent.title.fr} />
+          </h3>
           <p class="about-text">
-            iTowns is based on{" "}
-            <a
+            <span class="i18n-en">
+              iTowns is based on{" "}
+              <a
                 href="https://github.com/iTowns/itowns-governance"
                 target="_blank"
-                rel="noopener noreferrer"
-                >open governance</a
-            >{" "}
-            that allows everyone to contribute. The project brings together developers,
-            researchers, and geospatial stakeholders to evolve the framework together.
+                rel="noopener noreferrer">open governance</a
+              >
+              {" "}that allows everyone to contribute. The project brings together
+              developers, researchers, and geospatial stakeholders to evolve the
+              framework together.
+            </span>
+            <span class="i18n-fr">
+              iTowns s’appuie sur une{" "}
+              <a
+                href="https://github.com/iTowns/itowns-governance"
+                target="_blank"
+                rel="noopener noreferrer">gouvernance ouverte</a
+              >
+              {" "}qui permet à chacun de contribuer. Le projet rassemble
+              développeurs, chercheurs et acteurs géospatiaux pour faire évoluer
+              le cadriciel ensemble.
+            </span>
           </p>
         </div>
 
         <div class="about-formats about-block">
           <h3 class="section-subtitle about-formats-heading">
-            {multipleFormatSupport.title}
+            <I18n
+              en={multipleFormatSupport.title.en}
+              fr={multipleFormatSupport.title.fr}
+            />
           </h3>
-          <p class="about-formats-lead">{multipleFormatSupport.text}</p>
+          <p class="about-formats-lead">
+            <I18n
+              en={multipleFormatSupport.text.en}
+              fr={multipleFormatSupport.text.fr}
+            />
+          </p>
         </div>
       </div>
     </div>
@@ -238,19 +312,6 @@ const viewerSlides = [
 
   .about-toolkit-heading {
     margin: 0;
-  }
-
-  .about-toolkit-lead a {
-    font-weight: 500;
-    border-bottom: 1px solid currentColor;
-    padding-bottom: 1px;
-    transition: opacity var(--transition-short);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .about-toolkit-lead a:hover {
-      opacity: 0.75;
-    }
   }
 
   .about-toolkit-list {

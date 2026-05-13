@@ -1,0 +1,8 @@
+/* Couches EN/FR pilotées par html[data-lang] (voir script dans BaseLayout) */
+html[data-lang="en"] .i18n-fr {
+  display: none !important;
+}
+
+html[data-lang="fr"] .i18n-en {
+  display: none !important;
+}

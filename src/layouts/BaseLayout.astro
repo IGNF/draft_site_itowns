@@ -2,12 +2,14 @@
 import "@styles/_variables.css";
 import "@styles/_reset.css";
 import "@styles/global.css";
+import "@styles/i18n.css";
 
 import { Font } from "astro:assets";
 import { SITE, SOCIALS } from "@consts";
 import { ClientRouter } from "astro:transitions";
 import Header from "components/Header.astro";
 import Footer from "@components/Footer.astro";
+import I18n from "@components/I18n.astro";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -50,7 +52,7 @@ const schemaData = {
 ---
 
 <!doctype html>
-<html lang={`${SITE.LOCALE ?? "en"}`} data-theme="dark">
+<html lang={`${SITE.LOCALE ?? "en"}`} data-theme="dark" data-lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta
@@ -80,6 +82,20 @@ const schemaData = {
                     document.documentElement.dataset.theme = "dark";
                     var meta = document.getElementById("meta-theme-color");
                     if (meta) meta.setAttribute("content", "#0f0f0f");
+                }
+            })();
+        </script>
+        <script is:inline>
+            (function () {
+                try {
+                    var k = "itowns-lang";
+                    var s = localStorage.getItem(k);
+                    if (s !== "fr" && s !== "en") s = "en";
+                    document.documentElement.dataset.lang = s;
+                    document.documentElement.setAttribute("lang", s);
+                } catch (e) {
+                    document.documentElement.dataset.lang = "en";
+                    document.documentElement.setAttribute("lang", "en");
                 }
             })();
         </script>
@@ -144,7 +160,9 @@ const schemaData = {
         }
     </head>
     <body>
-        <a href="#main" class="skip-link">Skip to content</a>
+        <a href="#main" class="skip-link"
+            ><I18n en="Skip to content" fr="Aller au contenu" /></a
+        >
 
         <Header />
         <div id="page-scroll" class="page-scroll">
@@ -158,6 +176,8 @@ const schemaData = {
         <script is:inline>
             (function () {
                 var KEY = "itowns-theme";
+                var LANG_KEY = "itowns-lang";
+
                 function readIsDark() {
                     try {
                         var s = localStorage.getItem(KEY);
@@ -167,6 +187,116 @@ const schemaData = {
                     } catch (e) {
                         return true;
                     }
+                }
+                function readLang() {
+                    try {
+                        var ls = localStorage.getItem(LANG_KEY);
+                        if (ls === "fr" || ls === "en") return ls;
+                    } catch (e2) {}
+                    return "en";
+                }
+                function applyLang(code) {
+                    document.documentElement.dataset.lang = code;
+                    document.documentElement.setAttribute("lang", code);
+                    try {
+                        localStorage.setItem(LANG_KEY, code);
+                    } catch (e3) {}
+                    var langToggleLabel =
+                        code === "fr"
+                            ? {
+                                  aria: "Afficher le site en anglais",
+                                  title: "English version",
+                              }
+                            : {
+                                  aria: "Afficher le site en français",
+                                  title: "Version française",
+                              };
+                    var langBtns = document.querySelectorAll(".lang-toggle");
+                    for (var j = 0; j < langBtns.length; j++) {
+                        var lb = langBtns[j];
+                        if (lb && lb.setAttribute) {
+                            lb.setAttribute("aria-label", langToggleLabel.aria);
+                            lb.setAttribute("title", langToggleLabel.title);
+                            lb.setAttribute(
+                                "aria-pressed",
+                                code === "fr" ? "true" : "false",
+                            );
+                        }
+                    }
+                    var nav = document.querySelector(".nav-container");
+                    if (nav && nav.setAttribute) {
+                        nav.setAttribute(
+                            "aria-label",
+                            code === "fr"
+                                ? "Navigation principale"
+                                : "Main navigation",
+                        );
+                    }
+                    var hamburger = document.querySelector(".hamburger");
+                    if (hamburger && hamburger.setAttribute) {
+                        hamburger.setAttribute(
+                            "aria-label",
+                            code === "fr"
+                                ? "Ouvrir ou fermer le menu"
+                                : "Toggle menu",
+                        );
+                    }
+                    var communityPanel =
+                        document.querySelector(".community-panel");
+                    if (communityPanel && communityPanel.setAttribute) {
+                        communityPanel.setAttribute(
+                            "aria-label",
+                            code === "fr"
+                                ? "Contributeurs principaux — communauté GitHub"
+                                : "Main contributors — GitHub community",
+                        );
+                    }
+                    var logo = document.querySelectorAll(".logo");
+                    for (var li = 0; li < logo.length; li++) {
+                        var lg = logo[li];
+                        if (lg && lg.setAttribute) {
+                            if (code === "fr") {
+                                lg.setAttribute(
+                                    "title",
+                                    "Accueil iTowns (retour en haut de page si déjà sur la page)",
+                                );
+                                lg.setAttribute(
+                                    "aria-label",
+                                    "iTowns — accueil ou haut de page",
+                                );
+                            } else {
+                                lg.setAttribute(
+                                    "title",
+                                    "iTowns home (scroll to top when already on the page)",
+                                );
+                                lg.setAttribute(
+                                    "aria-label",
+                                    "iTowns — home or top of page",
+                                );
+                            }
+                        }
+                    }
+                    document
+                        .querySelectorAll("[data-aria-en][data-aria-fr]")
+                        .forEach(function (el) {
+                            if (!el || !el.setAttribute) return;
+                            var en = el.getAttribute("data-aria-en");
+                            var fr = el.getAttribute("data-aria-fr");
+                            if (en && fr) {
+                                el.setAttribute(
+                                    "aria-label",
+                                    code === "fr" ? fr : en,
+                                );
+                            }
+                        });
+                    applyTheme(readIsDark());
+                }
+                function toggleLangFromClick() {
+                    var cur =
+                        document.documentElement.dataset.lang === "fr"
+                            ? "fr"
+                            : "en";
+                    applyLang(cur === "fr" ? "en" : "fr");
                 }
                 function applyTheme(isDark) {
                     document.documentElement.dataset.theme = isDark
@@ -179,6 +309,10 @@ const schemaData = {
                             isDark ? "#0f0f0f" : "#f1f1f1",
                         );
                     }
+                    var lang =
+                        document.documentElement.dataset.lang === "fr"
+                            ? "fr"
+                            : "en";
                     var nodes = document.querySelectorAll(".theme-toggle");
                     for (var i = 0; i < nodes.length; i++) {
                         var btn = nodes[i];
@@ -191,11 +325,29 @@ const schemaData = {
                                 "aria-pressed",
                                 isDark ? "true" : "false",
                             );
+                            var labelWhenDark =
+                                lang === "fr"
+                                    ? "Activer le thème clair"
+                                    : "Enable light theme";
+                            var labelWhenLight =
+                                lang === "fr"
+                                    ? "Activer le thème sombre"
+                                    : "Enable dark theme";
+                            var titleWhenDark =
+                                lang === "fr"
+                                    ? "Passer au thème clair"
+                                    : "Toggle light / dark theme";
+                            var titleWhenLight =
+                                lang === "fr"
+                                    ? "Passer au thème sombre"
+                                    : "Toggle light / dark theme";
                             btn.setAttribute(
                                 "aria-label",
-                                isDark
-                                    ? "Enable light theme"
-                                    : "Enable dark theme",
+                                isDark ? labelWhenDark : labelWhenLight,
+                            );
+                            btn.setAttribute(
+                                "title",
+                                isDark ? titleWhenDark : titleWhenLight,
                             );
                         }
                     }
@@ -213,11 +365,16 @@ const schemaData = {
                     if (e.button !== 0) return;
                     var t = e.target;
                     if (!t || typeof t.closest !== "function") return;
+                    if (t.closest(".lang-toggle")) {
+                        e.preventDefault();
+                        toggleLangFromClick();
+                        return;
+                    }
                     if (!t.closest(".theme-toggle")) return;
                     toggleTheme();
                 }
                 function onAfterSwap() {
-                    applyTheme(readIsDark());
+                    applyLang(readLang());
                 }
                 if (!window.__itownsThemeUiBound) {
                     window.__itownsThemeUiBound = true;
@@ -227,7 +384,7 @@ const schemaData = {
                         onAfterSwap,
                     );
                 }
-                applyTheme(readIsDark());
+                applyLang(readLang());
             })();
         </script>
     </body>

@@ -1,40 +1,72 @@
 ---
+import I18n from "@components/I18n.astro";
+
 const faqItems = [
   {
     id: 1,
-    question: 'What is iTowns?',
-    answer:
-      'iTowns is an open-source framework for visualizing, navigating, and interacting with 2D/3D geospatial data directly in web applications.',
+    question: {
+      en: "What is iTowns?",
+      fr: "Qu’est-ce qu’iTowns ?",
+    },
+    answer: {
+      en: "iTowns is an open-source framework for visualizing, navigating, and interacting with 2D/3D geospatial data directly in web applications.",
+      fr: "iTowns est une bibliothèque open source pour visualiser, naviguer et interagir avec des données géospatiales 2D/3D directement dans des applications web.",
+    },
   },
   {
     id: 2,
-    question: 'Which data formats are supported?',
-    answer:
-      "Major families include 3D Tiles, Mapbox Vector Tiles, raster streams, GeoTIFF/COG, and point cloud formats such as Potree, EPT, COPC, and LAS.",
+    question: {
+      en: "Which data formats are supported?",
+      fr: "Quels formats de données sont pris en charge ?",
+    },
+    answer: {
+      en: "Major families include 3D Tiles, Mapbox Vector Tiles, raster streams, GeoTIFF/COG, and point cloud formats such as Potree, EPT, COPC, and LAS.",
+      fr: "Les formats principaux incluent 3D Tiles, Mapbox Vector Tiles, flux raster, GeoTIFF/COG, et des nuages de points (Potree, EPT, COPC, LAS, etc.).",
+    },
   },
   {
     id: 3,
-    question: 'Can iTowns run in globe or planar modes?',
-    answer:
-      'Yes. You can visualize global data in a globe viewer or work in local projected coordinate systems with planar viewers.',
+    question: {
+      en: "Can iTowns run in globe or planar modes?",
+      fr: "iTowns peut-il fonctionner en mode globe ou plan ?",
+    },
+    answer: {
+      en: "Yes. You can visualize global data in a globe viewer or work in local projected coordinate systems with planar viewers.",
+      fr: "Oui. Vous pouvez visualiser des données mondiales dans une visionneuse globe ou travailler en systèmes projetés locaux avec des visionneuses planaires.",
+    },
   },
   {
     id: 4,
-    question: "Where can I find runnable examples?",
-    answer:
-      'Use the official examples index at https://www.itowns-project.org/itowns/dev/examples/?#demo/index to open many ready-to-run demos.',
+    question: {
+      en: "Where can I find runnable examples?",
+      fr: "Où trouver des exemples exécutables ?",
+    },
+    answer: {
+      en: "Use the official examples index at https://www.itowns-project.org/itowns/dev/examples/?#demo/index to open many ready-to-run demos.",
+      fr: "Utilisez l’index officiel des exemples sur https://www.itowns-project.org/itowns/dev/examples/?#demo/index pour ouvrir de nombreuses démos prêtes à l’emploi.",
+    },
   },
   {
     id: 5,
-    question: 'Is there a starter project?',
-    answer:
-      'Yes. A community starter template exists to bootstrap an iTowns app quickly with a standard project structure.',
+    question: {
+      en: "Is there a starter project?",
+      fr: "Existe-t-il un projet de démarrage ?",
+    },
+    answer: {
+      en: "Yes. A community starter template exists to bootstrap an iTowns app quickly with a standard project structure.",
+      fr: "Oui. Un modèle de démarrage permet d’initialiser rapidement une application iTowns avec une structure de projet standard.",
+    },
   },
   {
     id: 6,
-    question: 'Who maintains iTowns?',
-    answer:
-      'The project is community-driven with contributors and stakeholders from public and private organizations around geospatial use cases.',
+    question: {
+      en: "Who maintains iTowns?",
+      fr: "Qui maintient iTowns ?",
+    },
+    answer: {
+      en: "The project is community-driven with contributors and stakeholders from public and private organizations around geospatial use cases.",
+      fr: "Le projet est porté par la communauté, avec des contributeurs parties prenantes d’organisations publiques et privées.",
+    },
   },
 ];
 ---
@@ -42,34 +74,57 @@ const faqItems = [
 <section id="faq" class="faq">
   <div class="section-container faq-container">
     <div class="faq-header">
-      <h2 class="section-title">Frequently asked questions.</h2>
+      <h2 class="section-title">
+        <I18n
+          en="Frequently asked questions."
+          fr="Foire aux questions."
+        />
+      </h2>
     </div>
 
     <div class="faq-content">
       <div class="accordion">
         {
-          faqItems.map(item => (
-            <div class="accordion-item">
-              <button class="accordion-button">
-                <span class="button-text">{item.question}</span>
-                <svg
-                  class="button-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
+          faqItems.map((item) => {
+            const panelId = `faq-panel-${item.id}`;
+            return (
+              <div class="accordion-item">
+                <button
+                  type="button"
+                  class="accordion-button"
+                  aria-expanded="false"
+                  aria-controls={panelId}
                 >
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-              <div class="accordion-content">
-                <div class="content-wrapper">
-                  <p>{item.answer}</p>
+                  <span class="button-text">
+                    <I18n en={item.question.en} fr={item.question.fr} />
+                  </span>
+                  <svg
+                    class="button-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+                <div
+                  class="accordion-content"
+                  id={panelId}
+                  role="region"
+                  aria-hidden="true"
+                >
+                  <div class="content-wrapper">
+                    <p>
+                      <I18n en={item.answer.en} fr={item.answer.fr} />
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         }
       </div>
     </div>
@@ -185,51 +240,51 @@ const faqItems = [
 
 <script>
   function initFAQAccordion() {
-    const accordionContainer = document.querySelector('.faq-container');
+    const accordionContainer = document.querySelector(".faq-container");
 
     if (!accordionContainer) return;
 
-    accordionContainer.addEventListener('click', e => {
-      const button = (e.target as HTMLElement).closest('.accordion-button');
+    accordionContainer.addEventListener("click", (e) => {
+      const button = (e.target as HTMLElement).closest(".accordion-button");
 
       if (!button) return;
 
-      const item = button.closest('.accordion-item');
-      const content = item?.querySelector<HTMLElement>('.accordion-content');
+      const item = button.closest(".accordion-item");
+      const content = item?.querySelector<HTMLElement>(".accordion-content");
 
       if (!item || !content) return;
 
-      const isActive = item.classList.contains('active');
+      const isActive = item.classList.contains("active");
 
-      document.querySelectorAll('.accordion-item.active').forEach(accItem => {
+      document.querySelectorAll(".accordion-item.active").forEach((accItem) => {
         const accContent =
-          accItem.querySelector<HTMLElement>('.accordion-content');
-        const accButton = accItem.querySelector('.accordion-button');
+          accItem.querySelector<HTMLElement>(".accordion-content");
+        const accButton = accItem.querySelector(".accordion-button");
 
         if (!accContent || !accButton) return;
 
         if (accItem !== item) {
-          accItem.classList.remove('active');
-          accContent.style.height = '0';
-          accButton.setAttribute('aria-expanded', 'false');
-          accContent.setAttribute('aria-hidden', 'true');
+          accItem.classList.remove("active");
+          accContent.style.height = "0";
+          accButton.setAttribute("aria-expanded", "false");
+          accContent.setAttribute("aria-hidden", "true");
         }
       });
 
       if (!isActive) {
-        item.classList.add('active');
-        content.style.height = content.scrollHeight + 'px';
-        button.setAttribute('aria-expanded', 'true');
-        content.setAttribute('aria-hidden', 'false');
+        item.classList.add("active");
+        content.style.height = content.scrollHeight + "px";
+        button.setAttribute("aria-expanded", "true");
+        content.setAttribute("aria-hidden", "false");
       } else {
-        item.classList.remove('active');
-        content.style.height = '0';
-        button.setAttribute('aria-expanded', 'false');
-        content.setAttribute('aria-hidden', 'true');
+        item.classList.remove("active");
+        content.style.height = "0";
+        button.setAttribute("aria-expanded", "false");
+        content.setAttribute("aria-hidden", "true");
       }
     });
   }
 
   initFAQAccordion();
-  document.addEventListener('astro:after-swap', initFAQAccordion);
+  document.addEventListener("astro:after-swap", initFAQAccordion);
 </script>

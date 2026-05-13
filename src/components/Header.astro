@@ -1,6 +1,7 @@
 ---
 import { Fragment } from "astro/jsx-runtime";
 import socialIcons from "@assets/socialIcons";
+import I18n from "@components/I18n.astro";
 import { SITE } from "@consts";
 
 const exempleGalleryUrl =
@@ -45,15 +46,22 @@ const contributorsUrl =
         <div class="nav-content">
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="#about" class="nav-link">About iTowns</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#portfolio" class="nav-link"
-                        >Features</a
+                    <a href="#about" class="nav-link"
+                        ><I18n
+                            en="About iTowns"
+                            fr="À propos d'iTowns"
+                        /></a
                     >
                 </li>
                 <li class="nav-item">
-                    <a href="#license" class="nav-link">License</a>
+                    <a href="#portfolio" class="nav-link"
+                        ><I18n en="Features" fr="Fonctionnalités" /></a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a href="#license" class="nav-link"
+                        ><I18n en="License" fr="Licence" /></a
+                    >
                 </li>
                 <li class="nav-item">
                     <a href="#faq" class="nav-link">FAQ</a>
@@ -64,7 +72,7 @@ const contributorsUrl =
                         class="nav-link"
                         target="_blank"
                         rel="noopener noreferrer"
-                        >Exemple</a
+                        ><I18n en="Examples" fr="Exemples" /></a
                     >
                 </li>
                 <li class="nav-item">
@@ -73,7 +81,10 @@ const contributorsUrl =
                         class="nav-link"
                         target="_blank"
                         rel="noopener noreferrer"
-                        >Documentation</a
+                        ><I18n
+                            en="Documentation"
+                            fr="Documentation"
+                        /></a
                     >
                 </li>
                 <li class="nav-item">
@@ -83,13 +94,27 @@ const contributorsUrl =
                         title={`Email ${SITE.EMAIL}`}
                         aria-label={`Contact — ${SITE.EMAIL}`}
                     >
-                        Contact
+                        <I18n en="Contact" fr="Contact" />
                     </a>
                 </li>
             </ul>
         </div>
 
         <div class="header-trailing">
+            <button
+                type="button"
+                class="lang-toggle"
+                title="Version française"
+                aria-label="Afficher le site en français"
+                aria-pressed="false"
+            >
+                <span class="lang-toggle-text i18n-en" aria-hidden="true"
+                    >FR</span
+                >
+                <span class="lang-toggle-text i18n-fr" aria-hidden="true"
+                    >EN</span
+                >
+            </button>
             <button
                 type="button"
                 class="theme-toggle"
@@ -135,6 +160,8 @@ const contributorsUrl =
                     class="nav-github"
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-aria-en="iTowns GitHub repository"
+                    data-aria-fr="Dépôt GitHub iTowns"
                     aria-label="iTowns GitHub repository"
                 >
                     <span class="nav-github-icon" aria-hidden="true">
@@ -151,15 +178,20 @@ const contributorsUrl =
                             href={projectAboutUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            >Project · iTowns</a
+                            ><I18n en="Project · iTowns" fr="Projet · iTowns" /></a
                         >
                     </p>
                     <p class="community-panel-title">
-                        Main contributors
+                        <I18n
+                            en="Main contributors"
+                            fr="Contributeurs principaux"
+                        />
                     </p>
                     <p class="community-panel-hint">
-                        Hover an avatar to highlight it — click to open the
-                        GitHub profile.
+                        <I18n
+                            en="Hover an avatar to highlight it — click to open the GitHub profile."
+                            fr="Survolez un avatar pour le mettre en avant — cliquez pour ouvrir le profil GitHub."
+                        />
                     </p>
                     <ul class="community-avatars">
                         {
@@ -175,7 +207,7 @@ const contributorsUrl =
                                         <img
                                             class="community-avatar-img"
                                             src={`https://github.com/${login}.png?size=80`}
-                                            alt={`${login} on GitHub`}
+                                            alt={`${login} sur GitHub / ${login} on GitHub`}
                                             width="40"
                                             height="40"
                                             loading="lazy"
@@ -192,7 +224,10 @@ const contributorsUrl =
                             class="community-all-link"
                             target="_blank"
                             rel="noopener noreferrer"
-                            >Full contributor list</a
+                            ><I18n
+                                en="Full contributor list"
+                                fr="Liste complète des contributeurs"
+                            /></a
                         >
                     </p>
                 </div>
@@ -237,6 +272,38 @@ const contributorsUrl =
         gap: var(--px-8);
         margin-inline-start: var(--px-16);
         flex-shrink: 0;
+    }
+
+    .lang-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.625rem;
+        height: 2.625rem;
+        padding: 0 var(--px-6);
+        border: none;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        border-radius: var(--radius-md, 8px);
+        transition: background-color var(--transition-short);
+        font-size: var(--text-xs, 0.75rem);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+    }
+
+    .lang-toggle-text {
+        line-height: 1;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .lang-toggle:hover {
+            background-color: color-mix(
+                in srgb,
+                var(--color-text-primary) 8%,
+                transparent
+            );
+        }
     }
 
     .theme-toggle {
@@ -749,7 +816,7 @@ const contributorsUrl =
 
         const onNavContentClick = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
-            if (target.classList.contains("nav-link")) {
+            if (target.closest(".nav-link")) {
                 closeMobileMenu();
             }
         };

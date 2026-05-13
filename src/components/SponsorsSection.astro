@@ -3,6 +3,8 @@
  * Bandeau fixe bas de page uniquement (pas de section dans le flux du document).
  * Réf. https://www.itowns-project.org/about#sponsors
  */
+import I18n from "@components/I18n.astro";
+
 type SponsorEntry = {
     name: string;
     href: string;
@@ -11,7 +13,11 @@ type SponsorEntry = {
 };
 
 type MarqueeBlock =
-    | { kind: "label"; tier: "key" | "recurrent"; text: string }
+    | {
+          kind: "label";
+          tier: "key" | "recurrent";
+          text: { en: string; fr: string };
+      }
     | { kind: "sep" }
     | { kind: "logo"; tier: "key" | "recurrent"; org: SponsorEntry };
 
@@ -54,13 +60,27 @@ const recurrentContributors: SponsorEntry[] = [
 
 function buildMarqueeCycle(): MarqueeBlock[] {
     return [
-        { kind: "label", tier: "key", text: "Key stakeholders" },
+        {
+            kind: "label",
+            tier: "key",
+            text: {
+                en: "Key stakeholders",
+                fr: "Parties prenantes clés",
+            },
+        },
         ...keyStakeholders.map(
             (org) =>
                 ({ kind: "logo", tier: "key", org }) satisfies MarqueeBlock,
         ),
         { kind: "sep" },
-        { kind: "label", tier: "recurrent", text: "Recurrent contributors" },
+        {
+            kind: "label",
+            tier: "recurrent",
+            text: {
+                en: "Recurrent contributors",
+                fr: "Contributeurs récurrents",
+            },
+        },
         ...recurrentContributors.map(
             (org) =>
                 ({ kind: "logo", tier: "recurrent", org }) satisfies MarqueeBlock,
@@ -73,12 +93,21 @@ const marqueeCycle = buildMarqueeCycle();
 const sponsorsMarquee = [...marqueeCycle, ...marqueeCycle, ...marqueeCycle];
 ---
 
-<section id="sponsors" class="sponsors" aria-label="Partners">
+<section id="sponsors" class="sponsors" aria-labelledby="sponsors-landmark-title">
+    <span id="sponsors-landmark-title" class="sr-only">
+        <I18n en="Partners" fr="Partenaires" />
+    </span>
     <div
         class="sponsors-strip"
         role="region"
-        aria-label="Partners — Key stakeholders then recurrent contributors. Auto-scrolling, pause on hover."
+        aria-labelledby="sponsors-strip-desc"
     >
+        <span id="sponsors-strip-desc" class="sr-only">
+            <I18n
+                en="Partners — Key stakeholders then recurrent contributors. Auto-scrolling, pause on hover."
+                fr="Partenaires — parties prenantes clés puis contributeurs récurrents. Défilement automatique, pause au survol."
+            />
+        </span>
         <div class="sponsors-strip-edge sponsors-strip-edge--start" aria-hidden="true"
         ></div>
         <div class="sponsors-strip-viewport">
@@ -97,7 +126,10 @@ const sponsorsMarquee = [...marqueeCycle, ...marqueeCycle, ...marqueeCycle];
                                     ]}
                                     data-marquee-cycle={cycleNum}
                                 >
-                                    {block.text}
+                                    <I18n
+                                        en={block.text.en}
+                                        fr={block.text.fr}
+                                    />
                                 </span>
                             );
                         }
@@ -113,6 +145,14 @@ const sponsorsMarquee = [...marqueeCycle, ...marqueeCycle, ...marqueeCycle];
                         }
 
                         const { org, tier } = block;
+                        const ariaEn =
+                            tier === "key"
+                                ? `${org.name} — Key stakeholder — website`
+                                : `${org.name} — Recurrent contributor — website`;
+                        const ariaFr =
+                            tier === "key"
+                                ? `${org.name} — Partie prenante clé — site web`
+                                : `${org.name} — Contributeur récurrent — site web`;
                         return (
                             <a
                                 class:list={[
@@ -124,7 +164,9 @@ const sponsorsMarquee = [...marqueeCycle, ...marqueeCycle, ...marqueeCycle];
                                 href={org.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                aria-label={`${org.name} — ${tier === "key" ? "Key stakeholder" : "Recurrent contributor"} — website`}
+                                data-aria-en={ariaEn}
+                                data-aria-fr={ariaFr}
+                                aria-label={ariaEn}
                                 data-marquee-cycle={cycleNum}
                             >
                                 <img

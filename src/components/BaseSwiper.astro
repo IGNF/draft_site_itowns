@@ -1,7 +1,9 @@
 ---
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+import I18n from "@components/I18n.astro";
 
 interface Props {
   sliderName: string;
@@ -16,18 +18,20 @@ const {
   pagination = true,
   beforeAfter = false,
 } = Astro.props;
+
+const prevLabelId = `${sliderName}-swiper-prev-lbl`;
+const nextLabelId = `${sliderName}-swiper-next-lbl`;
 ---
 
 <div class={`${sliderName}-showcase`}>
-  <!-- Before/After Toggle -->
   {
     beforeAfter && (
       <div class="showcase-toggle">
-        <button class="toggle-btn" data-view="before">
-          Before
+        <button type="button" class="toggle-btn" data-view="before">
+          <I18n en="Before" fr="Avant" />
         </button>
-        <button class="toggle-btn active" data-view="after">
-          After
+        <button type="button" class="toggle-btn active" data-view="after">
+          <I18n en="After" fr="Après" />
         </button>
       </div>
     )
@@ -38,14 +42,20 @@ const {
       <slot />
     </div>
 
-    <!-- Navigation -->
     {
       navigation && (
         <>
           <button
+            type="button"
             class={`btn--primary nav-btn prev ${sliderName}-prev`}
-            aria-label="Previous project"
+            aria-labelledby={prevLabelId}
           >
+            <span id={prevLabelId} class="sr-only">
+              <I18n
+                en="Previous example"
+                fr="Exemple précédent"
+              />
+            </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -57,9 +67,13 @@ const {
             </svg>
           </button>
           <button
+            type="button"
             class={`btn--primary nav-btn next ${sliderName}-next`}
-            aria-label="Next project"
+            aria-labelledby={nextLabelId}
           >
+            <span id={nextLabelId} class="sr-only">
+              <I18n en="Next example" fr="Exemple suivant" />
+            </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -75,7 +89,6 @@ const {
     }
   </div>
 
-  <!-- Pagination -->
   {pagination && <div class={`swiper-pagination ${sliderName}-pagination`} />}
 </div>
 

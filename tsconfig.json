@@ -12,6 +12,9 @@
       "@layouts/*": ["layouts/*"],
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
+      "@i18n/*": ["i18n/*"],
+      "@data/*": ["data/*"],
+      "@scripts/*": ["scripts/*"],
       "@utils/*": ["utils/*"]
     }
   }

@@ -5,129 +5,34 @@
  */
 import BaseSwiper from "@components/BaseSwiper.astro";
 import I18n from "@components/I18n.astro";
+import { viewerExamples } from "@data/viewerExamples";
+import { aboutCopy } from "@i18n/copy/about";
+import { bilingualImageAlt } from "@i18n/types";
 import { Image } from "astro:assets";
-/** Captures de la home officielle : /assets/images/home-examples/ (copiées en local). */
-import picGlobe from "/src/assets/images/home-examples/example-globe.png";
-import picPlanar from "/src/assets/images/home-examples/example-planar.png";
-import picVector from "/src/assets/images/home-examples/example-vector-tiles.png";
-import pic3d from "/src/assets/images/home-examples/example-3d-tiles.png";
-import picCopc from "/src/assets/images/home-examples/example-copc.png";
-import picDsm from "/src/assets/images/home-examples/example-dsm.png";
 
-const technologyContent = {
-  title: {
-    en: "Technology and purpose",
-    fr: "Technologie et objectifs",
-  },
-  text: {
-    en: "iTowns is designed to help developers integrate mapping and 3D visualization in web applications, from operational GIS interfaces to digital twin experiences.",
-    fr: "iTowns aide les développeurs à intégrer cartographie et visualisation 3D dans des applications web, des interfaces SIG opérationnelles aux expériences de jumeau numérique.",
-  },
-};
-
-const communityContent = {
-  title: {
-    en: "Open source and community",
-    fr: "Open source et communauté",
-  },
-};
-
-const multipleFormatSupport = {
-  title: {
-    en: "Multiple format support",
-    fr: "Prise en charge de nombreux formats",
-  },
-  text: {
-    en: "From OGC 3D Tiles and vector layers to terrain, imagery, and point clouds, iTowns combines many data families in one web viewer. Load GeoTIFF or COG rasters, Mapbox Vector Tiles, Potree / EPT / COPC or LAS point clouds, and WMS or streaming services in the same scene—so your app stays aligned with common GIS and BIM pipelines.",
-    fr: "Des 3D Tiles OGC et couches vectorielles au relief, à l’imagerie et aux nuages de points, iTowns réunit de nombreuses familles de données dans une visionneuse web. Chargez des rasters GeoTIFF ou COG, des tuiles vectorielles Mapbox, des nuages de points Potree / EPT / COPC ou LAS, et des services WMS ou flux dans une même scène — pour rester aligné avec les chaînes SIG et BIM courantes.",
-  },
-};
-
-const EXAMPLES_BASE = "https://itowns.github.io/itowns/examples";
-
-const viewerSlides = [
-  {
-    title: { en: "Globe viewer", fr: "Visionneuse globe" },
-    thumb: picGlobe,
-    thumbAlt: {
-      en: "Screenshot — globe viewer example",
-      fr: "Capture — exemple visionneuse globe",
-    },
-    link: `${EXAMPLES_BASE}/view_3d_map.html`,
-  },
-  {
-    title: { en: "Planar viewer", fr: "Visionneuse plane" },
-    thumb: picPlanar,
-    thumbAlt: {
-      en: "Screenshot — planar viewer example",
-      fr: "Capture — exemple visionneuse plane",
-    },
-    link: `${EXAMPLES_BASE}/view_25d_map.html`,
-  },
-  {
-    title: { en: "Vector Tiles viewer", fr: "Visionneuse tuiles vectorielles" },
-    thumb: picVector,
-    thumbAlt: {
-      en: "Screenshot — vector tiles example",
-      fr: "Capture — exemple tuiles vectorielles",
-    },
-    link: `${EXAMPLES_BASE}/vector_tile_3d_mesh_mapbox.html`,
-  },
-  {
-    title: { en: "3D tiles viewer", fr: "Visionneuse 3D Tiles" },
-    thumb: pic3d,
-    thumbAlt: {
-      en: "Screenshot — 3D Tiles example",
-      fr: "Capture — exemple 3D Tiles",
-    },
-    link: `${EXAMPLES_BASE}/3dtiles_loader.html`,
-  },
-  {
-    title: { en: "Point cloud viewer", fr: "Visionneuse nuage de points" },
-    thumb: picCopc,
-    thumbAlt: {
-      en: "Screenshot — point cloud example",
-      fr: "Capture — exemple nuage de points",
-    },
-    link: `${EXAMPLES_BASE}/copc_simple_loader.html?copc=https%3A%2F%2Fs3.amazonaws.com%2Fhobu-lidar%2Fautzen-classified.copc.laz`,
-  },
-  {
-    title: { en: "Raster data viewer", fr: "Visionneuse données raster" },
-    thumb: picDsm,
-    thumbAlt: {
-      en: "Screenshot — raster / DSM example",
-      fr: "Capture — exemple raster / MNS",
-    },
-    link: `${EXAMPLES_BASE}/view_3d_mns_map.html`,
-  },
-];
+const GOVERNANCE_URL = "https://github.com/iTowns/itowns-governance";
 ---
 
 <section id="about" class="about">
   <div class="section-container">
-    <h2 class="section-title">
-      <I18n
-        en="Build your own 3D geographic service."
-        fr="Créez votre propre service géographique 3D."
-      />
-    </h2>
+    <h2 class="section-title"><I18n t={aboutCopy.sectionTitle} /></h2>
 
     <div class="about-container">
       <div class="about-image-wrapper">
         <BaseSwiper sliderName="about" navigation={true} pagination={true}>
           {
-            viewerSlides.map((slide) => (
+            viewerExamples.map((example) => (
               <div class="swiper-slide">
                 <div class="about-slide">
                   <a
-                    href={slide.link}
+                    href={example.link}
                     class="about-slide-visual"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <Image
-                      src={slide.thumb}
-                      alt={`${slide.thumbAlt.en} — ${slide.thumbAlt.fr}`}
+                      src={example.thumb}
+                      alt={bilingualImageAlt(example.thumbAlt)}
                       width={960}
                       height={540}
                       class="media"
@@ -135,15 +40,15 @@ const viewerSlides = [
                     />
                   </a>
                   <p class="about-slide-caption">
-                    <I18n en={slide.title.en} fr={slide.title.fr} />
+                    <I18n t={example.title} />
                   </p>
                   <a
-                    href={slide.link}
+                    href={example.link}
                     class="about-slide-test"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <I18n en="Test the example" fr="Tester l'exemple" />
+                    <I18n t={aboutCopy.testExample} />
                   </a>
                 </div>
               </div>
@@ -154,40 +59,27 @@ const viewerSlides = [
       <div class="about-content">
         <div class="about-block">
           <h3 class="section-subtitle about-subtitle">
-            <I18n
-              en={technologyContent.title.en}
-              fr={technologyContent.title.fr}
-            />
+            <I18n t={aboutCopy.technology.title} />
           </h3>
-          <p class="about-text">
-            <I18n en={technologyContent.text.en} fr={technologyContent.text.fr} />
-          </p>
+          <p class="about-text"><I18n t={aboutCopy.technology.text} /></p>
         </div>
 
         <div class="about-toolkit about-block">
           <h3 class="section-subtitle about-toolkit-heading">
-            <I18n
-              en="Swiss army knife for geographic data"
-              fr="Couteau suisse des données géographiques"
-            />
+            <I18n t={aboutCopy.toolkit.title} />
           </h3>
-          <p class="about-toolkit-lead">
-            <I18n
-              en="iTowns offers a comprehensive toolkit for visualizing, interacting and composing diverse spatial datasets. Mix point clouds, terrain, orthophotos and vector data in a single view: easily extend the engine for your needs, build your application from simple blocks."
-              fr="iTowns propose une boîte à outils complète pour visualiser, interagir et composer des jeux de données spatiales variés. Mélangez nuages de points, relief, orthophotos et données vectorielles dans une même vue : étendez facilement le moteur à vos besoins et assemblez votre application à partir de briques simples."
-            />
-          </p>
+          <p class="about-toolkit-lead"><I18n t={aboutCopy.toolkit.text} /></p>
         </div>
 
         <div class="about-block">
           <h3 class="section-subtitle about-subtitle">
-            <I18n en={communityContent.title.en} fr={communityContent.title.fr} />
+            <I18n t={aboutCopy.community.title} />
           </h3>
           <p class="about-text">
             <span class="i18n-en">
               iTowns is based on{" "}
               <a
-                href="https://github.com/iTowns/itowns-governance"
+                href={GOVERNANCE_URL}
                 target="_blank"
                 rel="noopener noreferrer">open governance</a
               >
@@ -198,7 +90,7 @@ const viewerSlides = [
             <span class="i18n-fr">
               iTowns s’appuie sur une{" "}
               <a
-                href="https://github.com/iTowns/itowns-governance"
+                href={GOVERNANCE_URL}
                 target="_blank"
                 rel="noopener noreferrer">gouvernance ouverte</a
               >
@@ -211,17 +103,9 @@ const viewerSlides = [
 
         <div class="about-formats about-block">
           <h3 class="section-subtitle about-formats-heading">
-            <I18n
-              en={multipleFormatSupport.title.en}
-              fr={multipleFormatSupport.title.fr}
-            />
+            <I18n t={aboutCopy.formats.title} />
           </h3>
-          <p class="about-formats-lead">
-            <I18n
-              en={multipleFormatSupport.text.en}
-              fr={multipleFormatSupport.text.fr}
-            />
-          </p>
+          <p class="about-formats-lead"><I18n t={aboutCopy.formats.text} /></p>
         </div>
       </div>
     </div>
@@ -312,15 +196,6 @@ const viewerSlides = [
 
   .about-toolkit-heading {
     margin: 0;
-  }
-
-  .about-toolkit-list {
-    margin: 0;
-    padding-inline-start: var(--px-24, 1.5rem);
-    display: grid;
-    gap: var(--px-8, 0.5rem);
-    line-height: 1.55;
-    opacity: 0.9;
   }
 
   .about-container {

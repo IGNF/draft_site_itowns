@@ -1,9 +1,16 @@
 ---
+import type { Bilingual } from "@i18n/types";
+
 interface Props {
-  en: string;
+  en?: string;
   fr?: string;
+  /** Shorthand for `{ en, fr }` pairs. */
+  t?: Bilingual;
 }
-const { en, fr = en } = Astro.props;
+
+const { en, fr, t } = Astro.props;
+const enText = t?.en ?? en ?? "";
+const frText = t?.fr ?? fr ?? enText;
 ---
 
-<span class="i18n-en">{en}</span><span class="i18n-fr">{fr}</span>
+<span class="i18n-en">{enText}</span><span class="i18n-fr">{frText}</span>

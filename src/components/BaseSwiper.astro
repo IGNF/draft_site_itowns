@@ -9,14 +9,12 @@ interface Props {
   sliderName: string;
   navigation?: boolean;
   pagination?: boolean;
-  beforeAfter?: boolean;
 }
 
 const {
   sliderName,
   navigation = true,
   pagination = true,
-  beforeAfter = false,
 } = Astro.props;
 
 const prevLabelId = `${sliderName}-swiper-prev-lbl`;
@@ -24,19 +22,6 @@ const nextLabelId = `${sliderName}-swiper-next-lbl`;
 ---
 
 <div class={`${sliderName}-showcase`}>
-  {
-    beforeAfter && (
-      <div class="showcase-toggle">
-        <button type="button" class="toggle-btn" data-view="before">
-          <I18n en="Before" fr="Avant" />
-        </button>
-        <button type="button" class="toggle-btn active" data-view="after">
-          <I18n en="After" fr="Après" />
-        </button>
-      </div>
-    )
-  }
-
   <div class={`swiper ${sliderName}-swiper`}>
     <div class="swiper-wrapper">
       <slot />
@@ -93,46 +78,6 @@ const nextLabelId = `${sliderName}-swiper-next-lbl`;
 </div>
 
 <style>
-  .showcase-toggle {
-    display: flex;
-    gap: var(--px-16);
-    padding-inline: var(--px-64);
-    margin-bottom: var(--px-32);
-  }
-
-  .toggle-btn {
-    font-size: var(--text-xl);
-    font-weight: 500;
-    cursor: pointer;
-    opacity: 0.55;
-    transition: opacity 0.27s cubic-bezier(0, 0, 0.58, 1);
-    position: relative;
-    padding-bottom: var(--px-2);
-  }
-
-  .toggle-btn::after {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 100%;
-    height: var(--px-2);
-    background-color: currentColor;
-    transform: scaleX(0);
-    transform-origin: right center;
-    transition: transform 0.25s ease-out;
-  }
-
-  .toggle-btn.active {
-    opacity: 1;
-  }
-
-  .toggle-btn.active::after {
-    transform: scaleX(1);
-    transform-origin: left center;
-  }
-
   .nav-btn {
     position: absolute;
     top: 50%;
@@ -191,22 +136,7 @@ const nextLabelId = `${sliderName}-swiper-next-lbl`;
     transform: scale(1.5);
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    .toggle-btn:hover {
-      opacity: 1;
-    }
-
-    .toggle-btn:hover::after {
-      transform: scaleX(1);
-      transform-origin: left center;
-    }
-  }
-
   @media screen and (max-width: 55rem) {
-    .showcase-toggle {
-      padding-inline: 0;
-    }
-
     .nav-btn {
       display: none;
     }

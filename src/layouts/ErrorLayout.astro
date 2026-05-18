@@ -1,41 +1,25 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
 import I18n from "@components/I18n.astro";
+import { errorPages, type ErrorPageCode } from "@i18n/copy/errors";
 
 interface Props {
-    title: string;
-    description: string;
-    errorCode: string;
-    errorMessage: string;
-    errorMessageFr: string;
-    errorDescription: string;
-    errorDescriptionFr: string;
+    code: ErrorPageCode;
 }
 
-const {
-    title,
-    description,
-    errorCode,
-    errorMessage,
-    errorMessageFr,
-    errorDescription,
-    errorDescriptionFr,
-} = Astro.props;
+const { code } = Astro.props;
+const page = errorPages[code];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={page.title} description={page.description}>
     <section id="error" class="error">
         <div class="error-container">
             <div class="error-content">
-                <h1 class="error-title">{errorCode}</h1>
-                <p class="error-message">
-                    <I18n en={errorMessage} fr={errorMessageFr} />
-                </p>
-                <p class="error-description">
-                    <I18n en={errorDescription} fr={errorDescriptionFr} />
-                </p>
+                <h1 class="error-title">{code}</h1>
+                <p class="error-message"><I18n t={page.message} /></p>
+                <p class="error-description"><I18n t={page.body} /></p>
                 <a href={import.meta.env.BASE_URL} class="btn btn--primary">
-                    <I18n en="GO TO HOMEPAGE" fr="RETOUR À L’ACCUEIL" />
+                    <I18n t={page.cta} />
                 </a>
             </div>
         </div>

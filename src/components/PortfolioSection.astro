@@ -1,132 +1,22 @@
 ---
 import { Image } from "astro:assets";
 import I18n from "@components/I18n.astro";
-/** Images de la home officielle (copiées depuis itowns-project.org). */
-import picGlobe from "/src/assets/images/home-examples/example-globe.png";
-import picPlanar from "/src/assets/images/home-examples/example-planar.png";
-import picVector from "/src/assets/images/home-examples/example-vector-tiles.png";
-import pic3d from "/src/assets/images/home-examples/example-3d-tiles.png";
-import picCopc from "/src/assets/images/home-examples/example-copc.png";
-import picDsm from "/src/assets/images/home-examples/example-dsm.png";
-
-const EXAMPLES_BASE = "https://itowns.github.io/itowns/examples";
-
-const viewers = [
-    {
-        title: {
-            en: "Globe viewer",
-            fr: "Visionneuse en mode globe",
-        },
-        description: {
-            en: "Visualize data in a global reference coordinates system.",
-            fr: "Visualisez des données dans un système de référence mondial.",
-        },
-        link: `${EXAMPLES_BASE}/view_3d_map.html`,
-        thumb: picGlobe,
-        thumbAlt: {
-            en: "Screenshot — globe viewer example",
-            fr: "Capture — exemple visionneuse globe",
-        },
-    },
-    {
-        title: {
-            en: "Planar viewer",
-            fr: "Visionneuse en mode plan",
-        },
-        description: {
-            en: "Visualize data in a local projected Coordinates Reference System. Here, we display data in RGF93/Lambert93 CRS.",
-            fr: "Visualisez des données dans un SCR projeté local. Ici, affichage en RGF93 / Lambert-93.",
-        },
-        link: `${EXAMPLES_BASE}/view_25d_map.html`,
-        thumb: picPlanar,
-        thumbAlt: {
-            en: "Screenshot — planar viewer example",
-            fr: "Capture — exemple visionneuse plane",
-        },
-    },
-    {
-        title: {
-            en: "Vector tiles viewer",
-            fr: "Visionneuse tuiles vectorielles",
-        },
-        description: {
-            en: "Visualize Vector Tiles data. Here we display polygons for the holds of buildings and extrude them, their height being extracted from data.",
-            fr: "Visualisez des tuiles vectorielles. Dans cet exemple, des emprises de bâtiments extrudées, la hauteur étant issue d'un attribut.",
-        },
-        link: `${EXAMPLES_BASE}/vector_tile_3d_mesh_mapbox.html`,
-        thumb: picVector,
-        thumbAlt: {
-            en: "Screenshot — vector tiles example",
-            fr: "Capture — exemple tuiles vectorielles",
-        },
-    },
-    {
-        title: {
-            en: "3D tiles viewer",
-            fr: "Visionneuse 3D Tiles",
-        },
-        description: {
-            en: "Visualize 3D Tiles data. Here we display some batched 3d model.",
-            fr: "Visualisez des données 3D Tiles. Dans cet exemple, un modèle batched 3d.",
-        },
-        link: `${EXAMPLES_BASE}/3dtiles_loader.html`,
-        thumb: pic3d,
-        thumbAlt: {
-            en: "Screenshot — 3D Tiles example",
-            fr: "Capture — exemple 3D Tiles",
-        },
-    },
-    {
-        title: {
-            en: "Point cloud viewer",
-            fr: "Visionneuse nuage de points",
-        },
-        description: {
-            en: "Visualize point cloud data and style it as you wish. Here we display COPC data colored from its classification.",
-            fr: "Visualisez un nuage de points et stylisez-le. Dans cet exemple, des données COPC colorisées selon la classification.",
-        },
-        link: `${EXAMPLES_BASE}/copc_simple_loader.html?copc=https%3A%2F%2Fs3.amazonaws.com%2Fhobu-lidar%2Fautzen-classified.copc.laz`,
-        thumb: picCopc,
-        thumbAlt: {
-            en: "Screenshot — point cloud example",
-            fr: "Capture — exemple nuage de points",
-        },
-    },
-    {
-        title: {
-            en: "Raster data viewer",
-            fr: "Visionneuse données raster",
-        },
-        description: {
-            en: "Visualize raster data. Here we display some ortho-images as well as a Digital Surface Model.",
-            fr: "Visualisez des données raster. Dans cet exemple, des orthophotos et un modèle numérique de surface.",
-        },
-        link: `${EXAMPLES_BASE}/view_3d_mns_map.html`,
-        thumb: picDsm,
-        thumbAlt: {
-            en: "Screenshot — raster / DSM example",
-            fr: "Capture — exemple raster / MNS",
-        },
-    },
-];
+import { viewerExamples } from "@data/viewerExamples";
+import { portfolioCopy } from "@i18n/copy/portfolio";
+import { bilingualImageAlt } from "@i18n/types";
 ---
 
 <section id="portfolio" class="portfolio">
     <div class="section-container">
-        <h2 class="section-title">
-            <I18n
-                en="What can be done with iTowns?"
-                fr="Que peut-on faire avec iTowns ?"
-            />
-        </h2>
+        <h2 class="section-title"><I18n t={portfolioCopy.sectionTitle} /></h2>
         <div class="viewer-grid">
             {
-                viewers.map((viewer) => (
+                viewerExamples.map((example) => (
                     <article class="viewer-card">
                         <div class="viewer-thumb">
                             <Image
-                                src={viewer.thumb}
-                                alt={`${viewer.thumbAlt.en} — ${viewer.thumbAlt.fr}`}
+                                src={example.thumb}
+                                alt={bilingualImageAlt(example.thumbAlt)}
                                 width={640}
                                 height={360}
                                 class="media"
@@ -134,21 +24,18 @@ const viewers = [
                             />
                         </div>
                         <h3 class="section-subtitle info-title">
-                            <I18n en={viewer.title.en} fr={viewer.title.fr} />
+                            <I18n t={example.title} />
                         </h3>
                         <p class="info-text">
-                            <I18n
-                                en={viewer.description.en}
-                                fr={viewer.description.fr}
-                            />
+                            <I18n t={example.description} />
                         </p>
                         <a
                             class="btn--secondary view-details"
-                            href={viewer.link}
+                            href={example.link}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <I18n en="Open example" fr="Ouvrir l'exemple" />
+                            <I18n t={portfolioCopy.openExample} />
                         </a>
                     </article>
                 ))

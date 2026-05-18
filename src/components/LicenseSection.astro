@@ -4,35 +4,24 @@
  * https://www.itowns-project.org/about#license
  */
 import I18n from "@components/I18n.astro";
+import { licenseCopy } from "@i18n/copy/license";
 
-const itownsLicenseUrl =
+const ITOWNS_LICENSE_URL =
     "https://github.com/iTowns/iTowns/blob/master/LICENSE.md";
 ---
 
 <section id="license" class="license">
     <div class="section-container">
-        <h2 class="section-title">
-            <I18n en="License" fr="Licence" />
-        </h2>
-        <p class="license-lead">
-            <I18n
-                en="iTowns is distributed under permissive terms: you may use, modify, publish, and sell the code, provided you retain the license and copyright notices when you share it."
-                fr="iTowns est distribué sous des conditions permissives : vous pouvez utiliser, modifier, publier et vendre le code, à condition de conserver les mentions de licence et de droits d’auteur lorsque vous le partagez."
-            />
-        </p>
+        <h2 class="section-title"><I18n t={licenseCopy.sectionTitle} /></h2>
+        <p class="license-lead"><I18n t={licenseCopy.lead} /></p>
 
         <div class="license-block">
             <h3 class="section-subtitle license-block-title">iTowns</h3>
-            <p class="license-text">
-                <I18n
-                    en="Full modification and redistribution rights, with citation requirements and community rules as defined in the project license (MIT / dual licensing with CeCILL B as applicable)."
-                    fr="Droits complets de modification et de redistribution, avec obligations de citation et règles communautaires définies dans la licence du projet (MIT / double licence avec CeCILL B le cas échéant)."
-                />
-            </p>
+            <p class="license-text"><I18n t={licenseCopy.blockText} /></p>
             <ul class="license-links">
                 <li>
                     <a
-                        href={itownsLicenseUrl}
+                        href={ITOWNS_LICENSE_URL}
                         target="_blank"
                         rel="noopener noreferrer"
                         ><span class="i18n-en"
@@ -47,7 +36,7 @@ const itownsLicenseUrl =
                         href="https://opensource.org/license/mit/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        ><I18n en="MIT License" fr="Licence MIT" /></a
+                        ><I18n t={licenseCopy.mit} /></a
                     >
                 </li>
                 <li>

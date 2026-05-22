@@ -107,17 +107,6 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
         return root != null ? root.scrollTop : window.scrollY;
     }
 
-    function docTop(el: Element): number {
-        const root = getScrollRoot();
-        if (root != null && root.contains(el)) {
-            const er = el.getBoundingClientRect();
-            const rr = root.getBoundingClientRect();
-            return er.top - rr.top + root.scrollTop;
-        }
-        const r = el.getBoundingClientRect();
-        return r.top + window.scrollY;
-    }
-
     function updateHeroGlobeScroll(): void {
         const globe = document.querySelector("[data-hero-globe]");
         if (!(globe instanceof HTMLElement)) return;
@@ -128,46 +117,10 @@ const heroExampleUrl = `${import.meta.env.BASE_URL}itowns-globe-minimal.html`;
         /** Initial hero fade (~1.25× viewport height, min 520px). */
         const heroFadeSpan = Math.max(vh * 1.25, 520);
 
-        const licenseEl = document.getElementById("license");
-        const faqEl = document.getElementById("faq");
-
-        let opacity = 0;
-
-        if (scrollY < heroFadeSpan) {
-            opacity = 1 - smoothstep01(scrollY / heroFadeSpan);
-        } else if (licenseEl && faqEl) {
-            const licenseTop = docTop(licenseEl);
-            const faqTop = docTop(faqEl);
-            const fadeInLen = Math.min(320, vh * 0.4);
-            const fadeOutLen = Math.min(360, vh * 0.45);
-            /** Fully transparent before the FAQ block enters (scroll gap). */
-            const gapBeforeFaq = Math.max(vh * 0.5, 380);
-            let fadeOutEnd = faqTop - gapBeforeFaq;
-            let fadeOutStart = fadeOutEnd - fadeOutLen;
-            if (fadeOutStart < licenseTop) {
-                fadeOutStart = licenseTop;
-            }
-            if (fadeOutEnd <= fadeOutStart) {
-                fadeOutEnd = fadeOutStart + Math.min(fadeOutLen, 220);
-            }
-
-            if (scrollY < licenseTop - fadeInLen) {
-                opacity = 0;
-            } else if (scrollY < licenseTop) {
-                opacity = smoothstep01(
-                    (scrollY - (licenseTop - fadeInLen)) / fadeInLen,
-                );
-            } else if (scrollY < fadeOutStart) {
-                opacity = 1;
-            } else if (scrollY < fadeOutEnd) {
-                const outSpan = Math.max(1, fadeOutEnd - fadeOutStart);
-                opacity =
-                    1 -
-                    smoothstep01((scrollY - fadeOutStart) / outSpan);
-            } else {
-                opacity = 0;
-            }
-        }
+        const opacity =
+            scrollY < heroFadeSpan
+                ? 1 - smoothstep01(scrollY / heroFadeSpan)
+                : 0;
 
         globe.style.setProperty("--hero-globe-opacity", String(opacity));
         globe.style.pointerEvents = opacity < 0.04 ? "none" : "";

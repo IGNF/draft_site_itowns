@@ -96,7 +96,7 @@ const GOVERNANCE_URL = "https://github.com/iTowns/itowns-governance";
               >
               {" "}qui permet à chacun de contribuer. Le projet rassemble
               développeurs, chercheurs et acteurs géospatiaux pour faire évoluer
-              le cadriciel ensemble.
+              le framework ensemble.
             </span>
           </p>
         </div>
@@ -105,7 +105,28 @@ const GOVERNANCE_URL = "https://github.com/iTowns/itowns-governance";
           <h3 class="section-subtitle about-formats-heading">
             <I18n t={aboutCopy.formats.title} />
           </h3>
-          <p class="about-formats-lead"><I18n t={aboutCopy.formats.text} /></p>
+          <p class="about-formats-lead about-text">
+            <span class="i18n-en">
+              {aboutCopy.formats.textLink.en.before}
+              <a
+                href={aboutCopy.formats.textLink.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                >{aboutCopy.formats.textLink.en.label}</a
+              >
+              {aboutCopy.formats.textLink.en.after}
+            </span>
+            <span class="i18n-fr">
+              {aboutCopy.formats.textLink.fr.before}
+              <a
+                href={aboutCopy.formats.textLink.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                >{aboutCopy.formats.textLink.fr.label}</a
+              >
+              {aboutCopy.formats.textLink.fr.after}
+            </span>
+          </p>
         </div>
       </div>
     </div>

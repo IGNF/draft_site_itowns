@@ -1,9 +1,17 @@
 import type { Bilingual } from "@i18n/types";
 
+type FaqAnswerInlineLink = {
+  href: string;
+  en: { before: string; label: string; after: string };
+  fr: { before: string; label: string; after: string };
+};
+
 type FaqItem = {
   id: number;
   question: Bilingual;
-  answer: Bilingual;
+  answer?: Bilingual;
+  answerInlineLink?: FaqAnswerInlineLink;
+  answerLink?: { label: Bilingual; href: string };
 };
 
 export const faqCopy = {
@@ -32,6 +40,13 @@ export const faqCopy = {
       answer: {
         en: "Major families include 3D Tiles, Mapbox Vector Tiles, raster streams, GeoTIFF/COG, and point cloud formats such as Potree, EPT, COPC, and LAS.",
         fr: "Les formats principaux incluent 3D Tiles, Mapbox Vector Tiles, flux raster, GeoTIFF/COG, et des nuages de points (Potree, EPT, COPC, LAS, etc.).",
+      },
+      answerLink: {
+        label: {
+          en: "View the complete list",
+          fr: "Consultez la liste complète",
+        },
+        href: "https://github.com/iTowns/itowns/wiki/Supported-Features#supported-protocols-and-formats",
       },
     },
     {
@@ -62,9 +77,20 @@ export const faqCopy = {
         en: "Is there a starter project?",
         fr: "Existe-t-il un projet de démarrage ?",
       },
-      answer: {
-        en: "Yes. A community starter template exists to bootstrap an iTowns app quickly with a standard project structure.",
-        fr: "Oui. Un modèle de démarrage permet d’initialiser rapidement une application iTowns avec une structure de projet standard.",
+      answerInlineLink: {
+        href: "https://github.com/Desplandis/itowns-starter-webpack",
+        en: {
+          before: "Yes. A community ",
+          label: "starter template",
+          after:
+            " exists to bootstrap an iTowns app quickly with a standard project structure.",
+        },
+        fr: {
+          before: "Oui. Un ",
+          label: "modèle de démarrage",
+          after:
+            " permet d’initialiser rapidement une application iTowns avec une structure de projet standard.",
+        },
       },
     },
     {

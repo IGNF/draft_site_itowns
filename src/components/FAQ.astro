@@ -45,7 +45,51 @@ import { faqCopy } from "@i18n/copy/faq";
                 >
                   <div class="content-wrapper">
                     <p>
-                      <I18n t={item.answer} />
+                      {
+                        item.answerInlineLink ? (
+                          <>
+                            <span class="i18n-en">
+                              {item.answerInlineLink.en.before}
+                              <a
+                                href={item.answerInlineLink.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {item.answerInlineLink.en.label}
+                              </a>
+                              {item.answerInlineLink.en.after}
+                            </span>
+                            <span class="i18n-fr">
+                              {item.answerInlineLink.fr.before}
+                              <a
+                                href={item.answerInlineLink.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {item.answerInlineLink.fr.label}
+                              </a>
+                              {item.answerInlineLink.fr.after}
+                            </span>
+                          </>
+                        ) : (
+                          <I18n t={item.answer!} />
+                        )
+                      }
+                      {
+                        item.answerLink && (
+                          <>
+                            <br />
+                            <a
+                              href={item.answerLink.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <I18n t={item.answerLink.label} />
+                            </a>
+                            .
+                          </>
+                        )
+                      }
                     </p>
                   </div>
                 </div>
@@ -128,6 +172,18 @@ import { faqCopy } from "@i18n/copy/faq";
     opacity: 0;
     transform: translateY(10px);
     transition: all var(--transition-long);
+  }
+
+  .content-wrapper a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .content-wrapper a:hover {
+      opacity: 0.65;
+    }
   }
 
   .accordion-item.active .content-wrapper {

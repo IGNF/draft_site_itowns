@@ -10,7 +10,7 @@ import { aboutCopy } from "@i18n/copy/about";
 import { bilingualImageAlt } from "@i18n/types";
 import { Image } from "astro:assets";
 
-const GOVERNANCE_URL = "https://github.com/iTowns/itowns-governance";
+const GOVERNANCE_URL = "#governance";
 ---
 
 <section id="about" class="about">
@@ -78,22 +78,14 @@ const GOVERNANCE_URL = "https://github.com/iTowns/itowns-governance";
           <p class="about-text">
             <span class="i18n-en">
               iTowns is based on{" "}
-              <a
-                href={GOVERNANCE_URL}
-                target="_blank"
-                rel="noopener noreferrer">open governance</a
-              >
+              <a href={GOVERNANCE_URL}>open governance</a>
               {" "}that allows everyone to contribute. The project brings together
               developers, researchers, and geospatial stakeholders to evolve the
               framework together.
             </span>
             <span class="i18n-fr">
               iTowns s’appuie sur une{" "}
-              <a
-                href={GOVERNANCE_URL}
-                target="_blank"
-                rel="noopener noreferrer">gouvernance ouverte</a
-              >
+              <a href={GOVERNANCE_URL}>gouvernance ouverte</a>
               {" "}qui permet à chacun de contribuer. Le projet rassemble
               développeurs, chercheurs et acteurs géospatiaux pour faire évoluer
               le framework ensemble.

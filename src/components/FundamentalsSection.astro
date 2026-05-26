@@ -1,0 +1,325 @@
+---
+/**
+ * Contenu aligné sur :
+ * https://www.itowns-project.org/documentation#fundamentals
+ */
+import I18n from "@components/I18n.astro";
+import { fundamentalsCopy } from "@i18n/copy/fundamentals";
+import { bilingualImageAlt } from "@i18n/types";
+---
+
+<section id="fundamentals" class="fundamentals">
+    <div class="section-container fundamentals-container">
+        <div class="fundamentals-header">
+            <h2 class="section-title">
+                <I18n t={fundamentalsCopy.sectionTitle} />
+            </h2>
+            <p class="fundamentals-lead"><I18n t={fundamentalsCopy.lead} /></p>
+        </div>
+
+        <div class="accordion fundamentals-accordion">
+            {
+                fundamentalsCopy.topics.map((topic) => {
+                    const panelId = `fundamentals-panel-${topic.id}`;
+                    return (
+                        <div class="accordion-item">
+                            <button
+                                type="button"
+                                class="accordion-button"
+                                aria-expanded="false"
+                                aria-controls={panelId}
+                            >
+                                <span class="button-text">
+                                    <I18n t={topic.title} />
+                                </span>
+                                <svg
+                                    class="button-icon"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M12 5v14M5 12h14" />
+                                </svg>
+                            </button>
+                            <div
+                                class="accordion-content"
+                                id={panelId}
+                                role="region"
+                                aria-hidden="true"
+                            >
+                                <div class="content-wrapper">
+                                    {
+                                        topic.paragraphs.map((p) => (
+                                            <p>
+                                                <I18n t={p} />
+                                            </p>
+                                        ))
+                                    }
+                                    {
+                                        topic.list && (
+                                            <ul class="fundamentals-list">
+                                                {topic.list.map((item) => (
+                                                    <li>
+                                                        <I18n t={item} />
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )
+                                    }
+                                    {
+                                        topic.images && (
+                                            <div
+                                                class:list={[
+                                                    "fundamentals-figures",
+                                                    {
+                                                        "fundamentals-figures--layers":
+                                                            topic.images
+                                                                .length === 3,
+                                                    },
+                                                ]}
+                                            >
+                                                {topic.images.map((img) => (
+                                                    <figure>
+                                                        <img
+                                                            src={img.src}
+                                                            alt={bilingualImageAlt(
+                                                                img.alt,
+                                                            )}
+                                                            width={320}
+                                                            height={200}
+                                                            loading="lazy"
+                                                            decoding="async"
+                                                        />
+                                                    </figure>
+                                                ))}
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .fundamentals-container {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: var(--px-64);
+        align-items: start;
+    }
+
+    .fundamentals-header {
+        position: sticky;
+        top: var(--px-24);
+    }
+
+    .fundamentals-lead {
+        max-width: 36rem;
+        margin: calc(var(--px-64, 4rem) * -0.35) 0 var(--px-20, 1.25rem);
+        line-height: 1.55;
+        opacity: 0.92;
+    }
+
+    .fundamentals-accordion .accordion-item {
+        border-bottom: var(--px-1) solid var(--color-primary);
+    }
+
+    .fundamentals-accordion .accordion-button {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--px-16);
+        padding: var(--px-20) 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        color: inherit;
+        transition: all var(--transition-long);
+    }
+
+    .fundamentals-accordion .button-text {
+        font-size: clamp(var(--text-lg), 1.2vw, var(--text-xl));
+        font-weight: 400;
+        transition: all var(--transition-long);
+    }
+
+    .fundamentals-accordion .button-icon {
+        width: var(--px-20);
+        height: var(--px-20);
+        flex-shrink: 0;
+        transition: all var(--transition-long);
+    }
+
+    .fundamentals-accordion .accordion-item.active .button-text {
+        font-weight: 500;
+    }
+
+    .fundamentals-accordion .accordion-item.active .button-icon {
+        transform: rotate(45deg);
+    }
+
+    .fundamentals-accordion .accordion-content {
+        height: 0;
+        overflow: hidden;
+        transition: height var(--transition-long);
+    }
+
+    .fundamentals-accordion .content-wrapper {
+        padding-bottom: var(--px-20, 1.25rem);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all var(--transition-long);
+    }
+
+    .fundamentals-accordion .accordion-item.active .content-wrapper {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .fundamentals-accordion .content-wrapper p {
+        margin: 0 0 var(--px-12, 0.75rem);
+        line-height: 1.55;
+        max-width: 52rem;
+        opacity: 0.92;
+    }
+
+    .fundamentals-list {
+        margin: 0 0 var(--px-16, 1rem);
+        padding-left: 1.25rem;
+        line-height: 1.5;
+    }
+
+    .fundamentals-list li {
+        margin-bottom: var(--px-6, 0.375rem);
+        opacity: 0.92;
+    }
+
+    .fundamentals-figures {
+        display: grid;
+        gap: var(--px-12, 0.75rem);
+        margin-top: var(--px-16, 1rem);
+    }
+
+    .fundamentals-figures--layers {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .fundamentals-figures:not(.fundamentals-figures--layers) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fundamentals-figures figure {
+        margin: 0;
+        border: 1px solid var(--color-border-card);
+        border-radius: var(--radius-sm, 4px);
+        overflow: hidden;
+        background: var(--color-surface-muted);
+    }
+
+    .fundamentals-figures img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .fundamentals-accordion .accordion-button:hover .button-text,
+        .fundamentals-accordion .accordion-button:hover .button-icon {
+            opacity: 0.65;
+        }
+    }
+
+    @media screen and (max-width: 64rem) {
+        .fundamentals-container {
+            gap: var(--px-32);
+        }
+    }
+
+    @media screen and (max-width: 48rem) {
+        .fundamentals-container {
+            grid-template-columns: 1fr;
+        }
+
+        .fundamentals-header {
+            position: static;
+        }
+
+        .fundamentals-lead {
+            margin-top: calc(var(--px-44, 2.75rem) * -0.5);
+        }
+
+        .fundamentals-header .section-title {
+            margin-bottom: var(--px-44);
+        }
+
+        .fundamentals-figures--layers,
+        .fundamentals-figures:not(.fundamentals-figures--layers) {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    function initFundamentalsAccordion() {
+        const container = document.querySelector(".fundamentals-container");
+
+        if (!container) return;
+
+        container.addEventListener("click", (e) => {
+            const button = (e.target as HTMLElement).closest(".accordion-button");
+
+            if (!button) return;
+
+            const item = button.closest(".accordion-item");
+            const content = item?.querySelector<HTMLElement>(".accordion-content");
+
+            if (!item || !content) return;
+
+            const isActive = item.classList.contains("active");
+
+            container
+                .querySelectorAll(".accordion-item.active")
+                .forEach((accItem) => {
+                    const accContent =
+                        accItem.querySelector<HTMLElement>(
+                            ".accordion-content",
+                        );
+                    const accButton = accItem.querySelector(".accordion-button");
+
+                    if (!accContent || !accButton) return;
+
+                    if (accItem !== item) {
+                        accItem.classList.remove("active");
+                        accContent.style.height = "0";
+                        accButton.setAttribute("aria-expanded", "false");
+                        accContent.setAttribute("aria-hidden", "true");
+                    }
+                });
+
+            if (!isActive) {
+                item.classList.add("active");
+                content.style.height = content.scrollHeight + "px";
+                button.setAttribute("aria-expanded", "true");
+                content.setAttribute("aria-hidden", "false");
+            } else {
+                item.classList.remove("active");
+                content.style.height = "0";
+                button.setAttribute("aria-expanded", "false");
+                content.setAttribute("aria-hidden", "true");
+            }
+        });
+    }
+
+    initFundamentalsAccordion();
+    document.addEventListener("astro:after-swap", initFundamentalsAccordion);
+</script>
